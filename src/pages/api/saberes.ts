@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { randomUUID } from 'node:crypto';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { Resend } from 'resend';
 
 export const prerender = false;
 
@@ -41,7 +41,9 @@ const ALLOWED_EXTENSIONS = new Set([
 
 const MAX_FILES = 8;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
-const MAX_TOTAL_BYTES = 40 * 1024 * 1024;
+// Vercel Free: 4.5 MB por request; Pro: hasta ~4.5 MB por defecto también.
+// Ajustamos a 4 MB total para estar seguros en el plan Free.
+const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
 
 type FieldErrors = Record<string, string>;
 
@@ -78,6 +80,67 @@ function safeStem(filename: string, fallback: string) {
 
 function formatBytes(bytes: number) {
   return `${Math.round((bytes / (1024 * 1024)) * 10) / 10} MB`;
+}
+
+function buildEmailHtml(record: Record<string, unknown>): string {
+  const p = record.persona as Record<string, unknown>;
+  const s = record.saber as Record<string, unknown>;
+  const c = record.consentimientos as Record<string, unknown>;
+  const archivos = record.archivos as Array<Record<string, unknown>>;
+
+  return `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Nuevo saber — ${record.ticket}</title></head>
+<body style="font-family:sans-serif;max-width:640px;margin:auto;padding:24px;color:#1a1a1a;">
+  <h1 style="font-size:20px;border-bottom:2px solid #c8a84b;padding-bottom:8px;">
+    🌿 Nuevo saber registrado — ${record.ticket}
+  </h1>
+
+  <h2 style="font-size:16px;margin-top:24px;">Persona</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    <tr><td style="padding:4px 8px;color:#555;">Nombre</td><td style="padding:4px 8px;">${p.nombre}</td></tr>
+    <tr style="background:#f9f6ef;"><td style="padding:4px 8px;color:#555;">Comunidad</td><td style="padding:4px 8px;">${p.comunidad}</td></tr>
+    <tr><td style="padding:4px 8px;color:#555;">Departamento</td><td style="padding:4px 8px;">${p.departamento}</td></tr>
+    <tr style="background:#f9f6ef;"><td style="padding:4px 8px;color:#555;">Municipio</td><td style="padding:4px 8px;">${p.municipio}</td></tr>
+    <tr><td style="padding:4px 8px;color:#555;">Correo</td><td style="padding:4px 8px;">${p.correo ?? '—'}</td></tr>
+  </table>
+
+  <h2 style="font-size:16px;margin-top:24px;">El saber</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    <tr><td style="padding:4px 8px;color:#555;">Título</td><td style="padding:4px 8px;">${s.titulo}</td></tr>
+    <tr style="background:#f9f6ef;"><td style="padding:4px 8px;color:#555;">Categoría</td><td style="padding:4px 8px;">${s.categoria}</td></tr>
+    <tr><td style="padding:4px 8px;color:#555;">Descripción</td><td style="padding:4px 8px;white-space:pre-wrap;">${s.descripcion}</td></tr>
+    <tr style="background:#f9f6ef;"><td style="padding:4px 8px;color:#555;">Origen</td><td style="padding:4px 8px;">${s.origen ?? '—'}</td></tr>
+    <tr><td style="padding:4px 8px;color:#555;">Idioma</td><td style="padding:4px 8px;">${s.idioma ?? '—'}</td></tr>
+    <tr style="background:#f9f6ef;"><td style="padding:4px 8px;color:#555;">Transmisión</td><td style="padding:4px 8px;white-space:pre-wrap;">${s.transmision ?? '—'}</td></tr>
+    <tr><td style="padding:4px 8px;color:#555;">Enlace</td><td style="padding:4px 8px;">${s.enlace ? `<a href="${s.enlace}">${s.enlace}</a>` : '—'}</td></tr>
+  </table>
+
+  <h2 style="font-size:16px;margin-top:24px;">Consentimientos</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    <tr><td style="padding:4px 8px;color:#555;">Autoriza publicación</td><td style="padding:4px 8px;">${c.publicacion ? 'Sí' : 'No'}</td></tr>
+    <tr style="background:#f9f6ef;"><td style="padding:4px 8px;color:#555;">Autoriza contacto</td><td style="padding:4px 8px;">${c.contacto ? 'Sí' : 'No'}</td></tr>
+  </table>
+
+  ${
+    archivos.length > 0
+      ? `<h2 style="font-size:16px;margin-top:24px;">Archivos adjuntos (${archivos.length})</h2>
+  <ul style="font-size:14px;">
+    ${archivos.map((f) => `<li>${f.nombreOriginal} — ${formatBytes(Number(f.tamano))} (${f.tipo})</li>`).join('')}
+  </ul>
+  <p style="font-size:12px;color:#888;">Los archivos van adjuntos a este correo si su tamaño total lo permite.</p>`
+      : '<p style="font-size:14px;color:#666;margin-top:16px;">Sin archivos adjuntos.</p>'
+  }
+
+  <hr style="margin-top:32px;border:none;border-top:1px solid #e0d9c8;">
+  <p style="font-size:12px;color:#999;">
+    ID: ${record.id}<br>
+    Recibido: ${record.creadoEn}<br>
+    Estado: ${record.estado}
+  </p>
+</body>
+</html>`;
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -229,56 +292,78 @@ export const POST: APIRoute = async ({ request }) => {
     const year = new Date().getFullYear();
     const ticket = `SP-${year}-${id.slice(0, 6).toUpperCase()}`;
     const createdAt = new Date().toISOString();
-    const dataRoot =
-      process.env.SABERES_DATA_DIR ?? path.join(process.cwd(), 'data', 'saberes');
-    const recordDirectory = path.join(dataRoot, id);
 
-    try {
-      await mkdir(recordDirectory, { recursive: true });
+    const record = {
+      id,
+      ticket,
+      estado: 'pendiente-de-revision',
+      creadoEn: createdAt,
+      persona: {
+        nombre,
+        comunidad,
+        departamento,
+        municipio,
+        correo: correo || null,
+      },
+      saber: {
+        titulo,
+        categoria,
+        descripcion,
+        origen: origen || null,
+        idioma: idioma || null,
+        transmision: transmision || null,
+        enlace: enlace || null,
+      },
+      consentimientos: {
+        publicacion: true,
+        contacto: contacto === 'si',
+        registradoEn: createdAt,
+      },
+      archivos: fileMetadata,
+    };
 
-      for (const [index, file] of files.entries()) {
-        const metadata = fileMetadata[index];
-        const bytes = new Uint8Array(await file.arrayBuffer());
-        await writeFile(path.join(recordDirectory, metadata.nombreGuardado), bytes);
-      }
+    // Enviar por email con Resend
+    const resendApiKey = import.meta.env.RESEND_API_KEY;
+    const toEmail = import.meta.env.SABERES_EMAIL_TO;
 
-      const record = {
-        id,
-        ticket,
-        estado: 'pendiente-de-revision',
-        creadoEn: createdAt,
-        persona: {
-          nombre,
-          comunidad,
-          departamento,
-          municipio,
-          correo: correo || null,
+    if (!resendApiKey || !toEmail) {
+      console.error('[saberes] Faltan variables de entorno: RESEND_API_KEY o SABERES_EMAIL_TO');
+      return json(
+        {
+          ok: false,
+          message: 'No pudimos guardar tu saber en este momento. Intenta de nuevo en unos minutos.',
         },
-        saber: {
-          titulo,
-          categoria,
-          descripcion,
-          origen: origen || null,
-          idioma: idioma || null,
-          transmision: transmision || null,
-          enlace: enlace || null,
-        },
-        consentimientos: {
-          publicacion: true,
-          contacto: contacto === 'si',
-          registradoEn: createdAt,
-        },
-        archivos: fileMetadata,
-      };
-
-      await writeFile(
-        path.join(recordDirectory, 'saber.json'),
-        JSON.stringify(record, null, 2),
-        'utf8'
+        500
       );
-    } catch (error) {
-      await rm(recordDirectory, { recursive: true, force: true }).catch(() => undefined);
-      throw error;
+    }
+
+    const resend = new Resend(resendApiKey);
+
+    // Preparar archivos adjuntos para el email
+    const attachments: Array<{ filename: string; content: Buffer }> = [];
+    for (const [index, file] of files.entries()) {
+      const metadata = fileMetadata[index];
+      const bytes = Buffer.from(await file.arrayBuffer());
+      attachments.push({ filename: metadata.nombreGuardado, content: bytes });
+    }
+
+    const { error: emailError } = await resend.emails.send({
+      from: 'Saberes del Pacífico <noreply@saberes.email>',
+      to: [toEmail],
+      subject: `[${ticket}] Nuevo saber: ${titulo} — ${nombre}`,
+      html: buildEmailHtml(record),
+      attachments,
+    });
+
+    if (emailError) {
+      console.error('[saberes] Error al enviar email:', emailError);
+      return json(
+        {
+          ok: false,
+          message: 'No pudimos guardar tu saber en este momento. Intenta de nuevo en unos minutos.',
+        },
+        500
+      );
     }
 
     return json(
