@@ -1,0 +1,109 @@
+---
+interface Props {
+  id?: string;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  id = `sello-${Math.random().toString(36).slice(2, 8)}`,
+  size = 'md',
+  class: className,
+} = Astro.props;
+
+const pathId = `sello-texto-${id}`;
+---
+
+<svg
+  class:list={['seal', `seal--${size}`, className]}
+  viewBox="0 0 160 160"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <path
+      id={pathId}
+      d="M80,80 m-61,0 a61,61 0 1,1 122,0 a61,61 0 1,1 -122,0"
+    />
+  </defs>
+
+  <g class="seal__ring">
+    <circle cx="80" cy="80" r="76" fill="none" stroke="currentColor" stroke-width=".8" opacity=".28" />
+    <circle cx="80" cy="80" r="53" fill="none" stroke="currentColor" stroke-width=".8" opacity=".3" stroke-dasharray="1 6" />
+    <text class="seal__text">
+      <textPath href={`#${pathId}`} startOffset="0%">
+        SABERES ANCESTRALES · PACÍFICO COLOMBIANO ·
+      </textPath>
+    </text>
+  </g>
+
+  <g class="seal__center">
+    <circle cx="80" cy="74" r="12" fill="var(--gold)" />
+    <path
+      d="M54 91c5.2 0 5.2 4 10.4 4s5.2-4 10.4-4 5.2 4 10.4 4 5.2-4 10.4-4 5.2 4 10.4 4"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    />
+    <path
+      d="M62 101c4.3 0 4.3 3.2 8.6 3.2s4.3-3.2 8.6-3.2 4.3 3.2 8.6 3.2 4.3-3.2 8.6-3.2"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      opacity=".55"
+    />
+  </g>
+</svg>
+
+<style>
+  .seal {
+    overflow: visible;
+    color: currentColor;
+  }
+
+  .seal--sm {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .seal--md {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  .seal--lg {
+    width: clamp(8rem, 12vw, 11rem);
+    height: clamp(8rem, 12vw, 11rem);
+  }
+
+  .seal__ring {
+    transform-origin: 80px 80px;
+    animation: seal-rotate 48s linear infinite;
+  }
+
+  .seal__text {
+    fill: currentColor;
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.8px;
+  }
+
+  .seal__center {
+    transform-origin: 80px 80px;
+  }
+
+  @keyframes seal-rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seal__ring {
+      animation: none;
+    }
+  }
+</style>

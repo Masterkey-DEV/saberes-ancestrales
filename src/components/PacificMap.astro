@@ -1,0 +1,222 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 8);
+const titleId = `mapa-titulo-${uid}`;
+const descId = `mapa-desc-${uid}`;
+---
+
+<figure class:list={['pacific-map', className]}>
+  <svg
+    viewBox="0 0 680 540"
+    role="img"
+    aria-labelledby={`${titleId} ${descId}`}
+    fill="none"
+  >
+    <title id={titleId}>Mapa afectivo del Pacífico colombiano</title>
+    <desc id={descId}>
+      Ilustración del litoral Pacífico con los departamentos de Chocó, Valle del
+      Cauca, Cauca y Nariño, y sus ciudades de Quibdó, Buenaventura, Guapi y
+      Tumaco.
+    </desc>
+
+    <defs>
+      <pattern id={`dots-${uid}`} width="22" height="22" patternUnits="userSpaceOnUse">
+        <circle cx="1.5" cy="1.5" r="1" fill="var(--gold)" opacity=".22" />
+      </pattern>
+      <linearGradient id={`ocean-${uid}`} x1="80" y1="40" x2="420" y2="500" gradientUnits="userSpaceOnUse">
+        <stop stop-color="var(--forest-700)" stop-opacity=".55" />
+        <stop offset="1" stop-color="var(--forest-950)" stop-opacity=".1" />
+      </linearGradient>
+    </defs>
+
+    <!-- Océano -->
+    <path
+      d="M25 20h310c-20 80 20 120-6 195-27 78 26 120 0 180-20 48-1 77 12 125H25V20Z"
+      fill={`url(#ocean-${uid})`}
+    />
+
+    <g class="map-waves" stroke="rgba(246, 240, 228, .16)" stroke-width="1">
+      <path d="M48 112c52-25 85 27 138 5s94 14 130-9 56 3 76-9" />
+      <path d="M35 158c58-21 84 23 137 4s91 8 121-8" opacity=".8" />
+      <path d="M58 210c45-18 74 23 121 4s83 9 111-7" opacity=".55" />
+      <path d="M30 356c43-17 77 18 117 2s79 8 107-4" opacity=".7" />
+      <path d="M48 405c45-16 68 15 112 1s74 5 98-5" opacity=".45" />
+      <path d="M22 466c40-14 65 16 105 1s68 4 96-4" opacity=".35" />
+    </g>
+
+    <text class="map-ocean-label" x="167" y="305" transform="rotate(-90 167 305)">
+      OCÉANO PACÍFICO
+    </text>
+
+    <!-- Ballena y canoa -->
+    <g class="map-whale" stroke="rgba(246, 240, 228, .3)" stroke-width="1.5" stroke-linecap="round">
+      <path d="M144 163c10-8 22-7 29 2 4 5 10 6 15 3l9-6-3 11 8 7-12 1c-9 10-29 10-40 0-6-6-8-13-6-18Z" />
+      <path d="M176 181c4 4 9 7 14 7M148 163c-4-3-8-3-12 0M150 168c-4 1-6 4-7 8" opacity=".7" />
+    </g>
+
+    <g class="map-canoe" stroke="rgba(224, 171, 72, .68)" stroke-width="1.6" stroke-linecap="round">
+      <path d="M172 391c22-5 48-5 70 0-14 12-53 12-70 0Z" />
+      <path d="M205 366v24M204 369l-11 17M207 368l12 15" />
+      <path d="M162 410c7-4 14-4 21 0M191 418c7-4 14-4 21 0M220 410c7-4 14-4 21 0" opacity=".45" />
+    </g>
+
+    <!-- Tierra -->
+    <path
+      d="M446 18c-22 33-4 60-31 89-26 28-15 48 1 71 24 34-11 61-2 94 11 41-23 62-4 100 19 38 9 72 32 156h240V18H446Z"
+      fill="rgba(224, 171, 72, .09)"
+      stroke="rgba(224, 171, 72, .38)"
+      stroke-width="1.2"
+    />
+    <path
+      d="M446 18c-22 33-4 60-31 89-26 28-15 48 1 71 24 34-11 61-2 94 11 41-23 62-4 100 19 38 9 72 32 156h240V18H446Z"
+      fill={`url(#dots-${uid})`}
+    />
+
+    <!-- Ríos -->
+    <g stroke="rgba(184, 198, 171, .42)" stroke-width="1.2" stroke-linecap="round">
+      <path d="M582 91c-36 10-47 58-88 64s-49 42-63 57" />
+      <path d="M609 228c-45-5-66 26-101 31s-65 18-92 15" />
+      <path d="M576 341c-42-27-77 4-118 1s-50 17-67 21" />
+      <path d="M621 447c-41-18-68 8-105 3s-55-17-90-21" />
+    </g>
+
+    <!-- Ciudades -->
+    <g class="map-city">
+      <circle cx="538" cy="146" r="4.2" fill="var(--gold)" />
+      <circle class="map-pulse" cx="538" cy="146" r="4.2" fill="none" stroke="var(--gold)" />
+      <text x="550" y="139" class="map-region">CHOCÓ</text>
+      <text x="550" y="154" class="map-place">Quibdó</text>
+
+      <circle cx="419" cy="257" r="4.2" fill="var(--gold)" />
+      <circle class="map-pulse map-pulse--2" cx="419" cy="257" r="4.2" fill="none" stroke="var(--gold)" />
+      <text x="405" y="246" class="map-region" text-anchor="end">VALLE DEL CAUCA</text>
+      <text x="405" y="261" class="map-place" text-anchor="end">Buenaventura</text>
+
+      <circle cx="431" cy="349" r="4.2" fill="var(--gold)" />
+      <circle class="map-pulse map-pulse--3" cx="431" cy="349" r="4.2" fill="none" stroke="var(--gold)" />
+      <text x="417" y="338" class="map-region" text-anchor="end">CAUCA</text>
+      <text x="417" y="353" class="map-place" text-anchor="end">Guapi</text>
+
+      <circle cx="456" cy="438" r="4.2" fill="var(--gold)" />
+      <circle class="map-pulse map-pulse--4" cx="456" cy="438" r="4.2" fill="none" stroke="var(--gold)" />
+      <text x="442" y="427" class="map-region" text-anchor="end">NARIÑO</text>
+      <text x="442" y="442" class="map-place" text-anchor="end">Tumaco</text>
+    </g>
+
+    <!-- Rosa de los vientos -->
+    <g class="map-compass" stroke="rgba(246, 240, 228, .45)" stroke-width="1">
+      <circle cx="85" cy="450" r="24" />
+      <path d="M85 416v68M51 450h68" opacity=".45" />
+      <path d="m85 424 6 18-6-4-6 4 6-18Z" fill="var(--gold)" stroke="none" />
+    </g>
+    <text x="85" y="482" class="map-compass-label" text-anchor="middle">N</text>
+
+    <text x="642" y="505" class="map-footnote" text-anchor="end">
+      DEL DARIÉN AL RÍO MATAJE
+    </text>
+  </svg>
+
+  <figcaption>Mapa afectivo, no cartográfico. Cuatro territorios, una misma memoria.</figcaption>
+</figure>
+
+<style>
+  .pacific-map {
+    margin: 0;
+  }
+
+  .pacific-map svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .map-ocean-label {
+    fill: rgba(246, 240, 228, 0.26);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.42em;
+  }
+
+  .map-region {
+    fill: var(--gold);
+    font-family: var(--font-sans);
+    font-size: 8.5px;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+  }
+
+  .map-place {
+    fill: rgba(246, 240, 228, 0.87);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+
+  .map-footnote {
+    fill: rgba(246, 240, 228, 0.35);
+    font-family: var(--font-sans);
+    font-size: 7.5px;
+    font-weight: 650;
+    letter-spacing: 0.18em;
+  }
+
+  .map-compass-label {
+    fill: rgba(246, 240, 228, 0.5);
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .map-pulse {
+    animation: map-ping 3s var(--ease-soft) infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .map-pulse--2 {
+    animation-delay: 0.7s;
+  }
+
+  .map-pulse--3 {
+    animation-delay: 1.4s;
+  }
+
+  .map-pulse--4 {
+    animation-delay: 2.1s;
+  }
+
+  @keyframes map-ping {
+    0%,
+    22% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    60%,
+    100% {
+      opacity: 0;
+      transform: scale(3.2);
+    }
+  }
+
+  .pacific-map figcaption {
+    margin-top: 0.8rem;
+    color: rgba(246, 240, 228, 0.42);
+    font-size: 0.63rem;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map-pulse {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>

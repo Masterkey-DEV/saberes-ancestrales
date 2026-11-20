@@ -1,0 +1,1984 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryIcon from '../components/CategoryIcon.astro';
+import PacificMap from '../components/PacificMap.astro';
+import Seal from '../components/Seal.astro';
+
+import heroBoat from '../assets/images/nuqui-lancha.jpg';
+import chocoCoast from '../assets/images/choco-costa.jpg';
+import tumacoFishing from '../assets/images/tumaco-pesca.jpg';
+import marimbaDetail from '../assets/images/marimba-detalle.jpg';
+import turronCoco from '../assets/images/turron-coco.jpg';
+import guapiPanorama from '../assets/images/guapi-panorama.jpg';
+
+const departments = [
+  {
+    name: 'Chocó',
+    copy: 'Ríos que son calles, selvas que son despensas y una memoria que navega entre el Atrato y el San Juan.',
+  },
+  {
+    name: 'Valle del Cauca',
+    copy: 'Buenaventura y su bahía: puerto, manglar y una vida comunitaria que resiste al ritmo del agua.',
+  },
+  {
+    name: 'Cauca',
+    copy: 'Guapi, Timbiquí y la marimba del Pacífico sur. Oficios que se aprenden cantando y escuchando.',
+  },
+  {
+    name: 'Nariño',
+    copy: 'Tumaco, sus manglares y la crianza de la piangua: un saber que sostiene familias y ecosistemas.',
+  },
+];
+
+const saberes = [
+  {
+    number: '01',
+    slug: 'oralidad',
+    icon: 'oralidad' as const,
+    label: 'Palabra',
+    title: 'Arrullos y alabaos',
+    copy: 'La voz que arrulla, despide y enseña. Relatos, décimas y cantos que se aprenden escuchando a los mayores.',
+    theme: 'forest',
+  },
+  {
+    number: '02',
+    slug: 'musica',
+    icon: 'musica' as const,
+    label: 'Música y fiesta',
+    title: 'Marimba, currulao y tambores',
+    copy: 'El sonido que convoca a la comunidad. Palmas de chonta, cueros y cantos que sostienen la fiesta y el duelo.',
+    theme: 'photo-marimba',
+    image: marimbaDetail,
+    imageAlt: 'Detalle de la madera y las cuerdas de una marimba de chonta.',
+  },
+  {
+    number: '03',
+    slug: 'medicina',
+    icon: 'medicina' as const,
+    label: 'Medicina ancestral',
+    title: 'Plantas, parteras y remedios',
+    copy: 'El jardín al lado de la casa guarda respuestas. Saberes de matronas y médicos tradicionales para cuidar el cuerpo.',
+    theme: 'sage',
+  },
+  {
+    number: '04',
+    slug: 'tejido',
+    icon: 'tejido' as const,
+    label: 'Oficio y trama',
+    title: 'Cestería y palma',
+    copy: 'Tramas que repiten la forma del río, la casa y el tejido social. Manos que convierten la fibra en memoria.',
+    theme: 'gold',
+  },
+  {
+    number: '05',
+    slug: 'cocina',
+    icon: 'cocina' as const,
+    label: 'Fogón y sabor',
+    title: 'Coco, piangua y leña',
+    copy: 'El sabor del manglar y del monte en la comida compartida. Recetas que son también formas de cuidar el territorio.',
+    theme: 'photo-cocina',
+    image: turronCoco,
+    imageAlt: 'Turrón de coco envuelto en hojas secas sobre fondo rojo.',
+  },
+  {
+    number: '06',
+    slug: 'territorio',
+    icon: 'territorio' as const,
+    label: 'Territorio y sustento',
+    title: 'Pesca, navegación y siembra',
+    copy: 'Leer las mareas, las estrellas y los ciclos de la luna. Conocimientos que ordenan la vida entre el río y el mar.',
+    theme: 'maroon',
+  },
+];
+
+const steps = [
+  {
+    number: '01',
+    title: 'Escucha tu memoria',
+    copy: 'Identifica el saber, quién te lo enseñó y a qué territorio pertenece. La memoria también tiene raíces.',
+  },
+  {
+    number: '02',
+    title: 'Cuéntalo a tu manera',
+    copy: 'Escribe, graba un audio, sube una foto o un documento. No hay una sola forma de guardar un saber.',
+  },
+  {
+    number: '03',
+    title: 'Define sus cuidados',
+    copy: 'Autoriza su publicación y cuéntanos cómo puede usarse. El permiso es parte del conocimiento.',
+  },
+];
+---
+
+<BaseLayout
+  title="Saberes del Pacífico | Archivo vivo de saberes ancestrales"
+  description="Un archivo vivo para compartir las voces, oficios y saberes ancestrales del Pacífico colombiano: Chocó, Valle del Cauca, Cauca y Nariño."
+  headerVariant="overlay"
+  bodyClass="home"
+>
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__media">
+      <Image
+        src={heroBoat}
+        alt="Una lancha de madera descansa sobre la arena en una playa de Nuquí, Chocó, con el océano al fondo."
+        widths={[720, 1080, 1440, 1920, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        quality={82}
+      />
+    </div>
+    <div class="hero__veil"></div>
+
+    <div class="hero__inner page-shell">
+      <div class="hero__copy">
+        <p class="kicker kicker--light hero__kicker">Archivo vivo · Pacífico colombiano</p>
+        <h1 class="hero__title" id="hero-title">
+          La memoria<br />
+          del Pacífico<br />
+          <em>se comparte.</em>
+        </h1>
+        <p class="hero__lead">
+          Un lugar para las voces, oficios y saberes ancestrales de Chocó,
+          Valle del Cauca, Cauca y Nariño.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--gold" href="/compartir">
+            Comparte tu saber
+            <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2.5 8h10M9 4.5 12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+          <a class="btn btn--outline-light" href="#saberes">Explorar saberes</a>
+        </div>
+      </div>
+
+      <aside class="hero__aside" aria-label="Sello del archivo">
+        <Seal size="lg" class="hero__seal" />
+        <p class="hero__aside-note">
+          Un archivo comunitario para lo que no debe perderse.
+        </p>
+      </aside>
+    </div>
+
+    <div class="hero__footer">
+      <div class="page-shell hero__footer-inner">
+        <p>Costa Pacífica · Colombia</p>
+        <a class="hero__scroll" href="#manifiesto">
+          Desliza para escuchar
+          <span aria-hidden="true"></span>
+        </a>
+        <p class="hero__credit">
+          Nuquí, Chocó · Foto de Leonardo Cadavid Perdomo
+          <span>CC BY-SA 4.0</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MARQUEE ==================== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      {[0, 1].map(() => (
+        <div class="marquee__group">
+          <span>Territorio</span><i>✦</i>
+          <span class="marquee__italic">Oralidad</span><i>✦</i>
+          <span>Marimba</span><i>✦</i>
+          <span class="marquee__italic">Medicina</span><i>✦</i>
+          <span>Tejido</span><i>✦</i>
+          <span class="marquee__italic">Cocina</span><i>✦</i>
+          <span>Manglar</span><i>✦</i>
+          <span class="marquee__italic">Memoria</span><i>✦</i>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- ==================== MANIFIESTO ==================== -->
+  <section class="section manifesto" id="manifiesto">
+    <div class="manifesto__sun" aria-hidden="true"></div>
+
+    <div class="page-shell">
+      <div class="manifesto__top reveal">
+        <p class="kicker">El archivo</p>
+        <h2 class="display display--xl manifesto__title">
+          No es un museo.<br />
+          Es una <em>conversación</em><br />
+          con el territorio.
+        </h2>
+      </div>
+
+      <div class="manifesto__bottom">
+        <div class="manifesto__copy reveal">
+          <p class="body-copy">
+            El Pacífico colombiano es uno de los territorios más biodiversos
+            del planeta y, sobre todo, una riqueza de memorias que se
+            transmiten de boca en boca: cómo sembrar, cómo curar, cómo cantar,
+            cómo navegar, cómo criar y cómo cuidar.
+          </p>
+          <p class="body-copy">
+            Saberes del Pacífico reúne esos conocimientos en un archivo
+            comunitario, vivo y abierto. Un lugar para que las nuevas
+            generaciones encuentren la voz de sus mayores y para que cada
+            saber reciba el crédito, el contexto y el cuidado que merece.
+          </p>
+
+          <div class="manifesto__signature" aria-hidden="true">
+            <span></span>
+            <p>Memoria viva, no mercancía.</p>
+          </div>
+        </div>
+
+        <aside class="principles reveal" id="principios" style="--reveal-delay: 120ms">
+          <div class="principles__head">
+            <p class="kicker kicker--light">Nuestros cuidados</p>
+            <h3 class="display display--sm">Un archivo que no se apropia.</h3>
+          </div>
+
+          <ol class="principles__list">
+            <li>
+              <span>01</span>
+              <p><strong>La autoría primero.</strong> Cada saber lleva el nombre de quien lo comparte y de quienes lo sostienen.</p>
+            </li>
+            <li>
+              <span>02</span>
+              <p><strong>El permiso no es un trámite.</strong> Nada se publica sin la autorización de su comunidad.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <p><strong>El contexto también es memoria.</strong> Importa de dónde viene el saber y cómo debe cuidarse.</p>
+            </li>
+          </ol>
+
+          <div class="principles__foot">
+            <Seal size="sm" />
+            <p>Estos son los acuerdos que sostienen el archivo.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TERRITORIO ==================== -->
+  <section class="section section--forest territory" id="territorio">
+    <div class="page-shell">
+      <div class="territory__head reveal">
+        <p class="kicker kicker--light">01 / El territorio</p>
+        <h2 class="display display--lg">
+          Cuatro departamentos.<br />
+          Un solo océano.<br />
+          <em>Muchas formas de habitar.</em>
+        </h2>
+        <div class="territory__intro">
+          <p class="lede">
+            Entre la selva húmeda y el mar, el litoral Pacífico guarda una
+            historia de resistencia y creación. Aquí los ríos son caminos, la
+            noche se canta y el conocimiento pasa de mano en mano.
+          </p>
+          <p>
+            Del Darién al río Mataje, comunidades afrocolombianas e indígenas
+            han aprendido a leer las mareas, a sembrar sin herir la tierra y a
+            sostener la vida en común.
+          </p>
+        </div>
+      </div>
+
+      <div class="territory__body">
+        <div class="territory__map reveal">
+          <PacificMap />
+        </div>
+
+        <div class="territory__list reveal" style="--reveal-delay: 120ms">
+          {departments.map((department, index) => (
+            <article class="department">
+              <span class="department__index">0{index + 1}</span>
+              <div>
+                <h3 class="department__name">{department.name}</h3>
+                <p>{department.copy}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="territory__gallery">
+        <figure class="territory-photo territory-photo--wide reveal">
+          <div class="territory-photo__frame">
+            <Image
+              src={chocoCoast}
+              alt="Costa selvática del Chocó vista desde el océano, con palmas y agua turquesa."
+              widths={[560, 900, 1300, 1800]}
+              sizes="(max-width: 900px) 100vw, 58vw"
+              loading="lazy"
+              quality={80}
+            />
+          </div>
+          <figcaption>
+            Océano Pacífico en el Chocó · Foto de Luis Pérez
+            <span>CC BY 2.0</span>
+          </figcaption>
+        </figure>
+
+        <figure class="territory-photo territory-photo--tall reveal" style="--reveal-delay: 150ms">
+          <div class="territory-photo__frame">
+            <Image
+              src={tumacoFishing}
+              alt="Dos pescadores navegan en una chalupa sobre aguas abiertas cerca de Tumaco, Nariño."
+              widths={[480, 760, 1024]}
+              sizes="(max-width: 900px) 100vw, 38vw"
+              loading="lazy"
+              quality={80}
+            />
+          </div>
+          <figcaption>
+            A pescar en chalupa, Tumaco · Foto de Sol Robayo S.
+            <span>CC BY 2.0</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SABERES ==================== -->
+  <section class="section section--paper saberes" id="saberes">
+    <div class="page-shell">
+      <div class="saberes__head">
+        <div class="reveal">
+          <p class="kicker">02 / Los saberes</p>
+          <h2 class="display display--lg saberes__title">
+            Oficios que<br />
+            <em>sostienen la vida.</em>
+          </h2>
+        </div>
+        <div class="saberes__note reveal" style="--reveal-delay: 100ms">
+          <p class="lede">
+            Estas son seis puertas para entrar al archivo. Cada saber tiene su
+            propio ritmo, su propia lengua y sus propias reglas de cuidado.
+          </p>
+          <p class="saberes__hint">Elige una y comparte lo que sabes.</p>
+        </div>
+      </div>
+
+      <div class="saberes__grid">
+        {saberes.map((saber, index) => (
+          <a
+            class:list={['saber-card', `saber-card--${saber.theme}`, 'reveal']}
+            href={`/compartir?categoria=${saber.slug}`}
+            style={`--reveal-delay: ${Math.min(index * 55, 300)}ms`}
+          >
+            {saber.image && (
+              <div class="saber-card__media" aria-hidden="true">
+                <Image
+                  src={saber.image}
+                  alt=""
+                  widths={[440, 700, 1000]}
+                  sizes="(max-width: 900px) 100vw, 33vw"
+                  loading="lazy"
+                  quality={78}
+                />
+              </div>
+            )}
+
+            <div class="saber-card__top">
+              <span class="saber-card__number">{saber.number}</span>
+              <CategoryIcon name={saber.icon} class="saber-card__icon" />
+            </div>
+
+            <div class="saber-card__body">
+              <p class="saber-card__label">{saber.label}</p>
+              <h3 class="saber-card__title">{saber.title}</h3>
+              <p class="saber-card__copy">{saber.copy}</p>
+              <span class="saber-card__link">
+                Aportar a esta memoria
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M2.5 8h10M9 4.5 12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </div>
+
+            <span class="saber-card__ghost" aria-hidden="true">{saber.number}</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="saberes__foot reveal">
+        <p>
+          ¿Tu saber no cabe en ninguna categoría?
+          <strong>También tiene un lugar aquí.</strong>
+        </p>
+        <a class="text-link" href="/compartir?categoria=otro">
+          Cuéntalo a tu manera
+          <svg class="arrow-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 8h10M9 4.5 12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CITA / FOTO ==================== -->
+  <section class="quote-band" aria-labelledby="quote-heading">
+    <div class="quote-band__media">
+      <Image
+        src={guapiPanorama}
+        alt="Panorámica del puerto de Guapi, Cauca, con lanchas y casas de madera sobre el agua."
+        widths={[900, 1400, 2000, 2600]}
+        sizes="100vw"
+        loading="lazy"
+        quality={80}
+      />
+    </div>
+    <div class="quote-band__veil"></div>
+
+    <div class="page-shell quote-band__inner">
+      <h2 class="visually-hidden" id="quote-heading">La palabra como archivo</h2>
+      <div class="quote-band__top">
+        <p class="kicker kicker--light">La palabra</p>
+        <Seal size="sm" />
+      </div>
+
+      <figure class="quote-band__quote">
+        <blockquote>
+          <p>
+            El río no se lleva la memoria.<br />
+            La devuelve <em>en cada creciente.</em>
+          </p>
+        </blockquote>
+        <figcaption>Manifiesto del archivo · Saberes del Pacífico</figcaption>
+      </figure>
+
+      <p class="quote-band__credit">
+        Guapi, Cauca · Foto de Angeles2023 <span>CC BY-SA 4.0</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== PARTICIPA ==================== -->
+  <section class="section section--cream participate" id="participar">
+    <div class="page-shell">
+      <div class="participate__head">
+        <p class="kicker reveal">03 / Participa</p>
+        <h2 class="display display--lg reveal">
+          Compartir también es<br />
+          <em>un acto de cuidado.</em>
+        </h2>
+        <p class="lede reveal">
+          Un saber no pierde valor cuando se comparte: crece. Cuéntanos qué
+          sabes, de dónde viene y cómo quieres que se use.
+        </p>
+      </div>
+
+      <div class="participate__grid">
+        <div class="participate__steps">
+          {steps.map((step, index) => (
+            <article class="step reveal" style={`--reveal-delay: ${index * 80}ms`}>
+              <span class="step__number">{step.number}</span>
+              <div class="step__content">
+                <h3 class="step__title">{step.title}</h3>
+                <p>{step.copy}</p>
+              </div>
+            </article>
+          ))}
+
+          <a class="btn btn--ink participate__button" href="/compartir">
+            Empezar mi aporte
+            <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2.5 8h10M9 4.5 12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+
+        <aside class="participate__note reveal" style="--reveal-delay: 160ms">
+          <Seal size="md" />
+          <p class="kicker kicker--light">Antes de enviar</p>
+          <h3 class="display display--sm">Tu palabra, tus reglas.</h3>
+          <ul>
+            <li>Puedes usar tu nombre o un seudónimo.</li>
+            <li>Puedes adjuntar fotos, audios y documentos.</li>
+            <li>El saber colectivo requiere permiso de la comunidad.</li>
+            <li>Nunca publicaremos tus datos de contacto.</li>
+          </ul>
+          <p class="participate__note-small">
+            Si tu saber está en una lengua propia, escríbelo en ella. El
+            archivo también puede cuidar su traducción.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA FINAL ==================== -->
+  <section class="cta-band section--gold" aria-labelledby="cta-title">
+    <div class="page-shell cta-band__inner">
+      <p class="kicker reveal">La próxima voz puede ser la tuya</p>
+
+      <div class="cta-band__main">
+        <h2 class="display display--xl reveal" id="cta-title">
+          ¿Qué saber<br />
+          te enseñó <em>el río?</em>
+        </h2>
+
+        <a class="cta-disc reveal" href="/compartir" style="--reveal-delay: 130ms">
+          <span>Comparte<br />tu saber</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 19 19 5M8 5h11v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="cta-band__foot">
+        <p>Cinco minutos pueden hacer que una memoria dure generaciones.</p>
+        <p>Puedes adjuntar fotos, audios o documentos.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ==================== HERO ==================== */
+
+  .hero {
+    position: relative;
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    background: var(--forest-950);
+    color: var(--cream);
+    isolation: isolate;
+  }
+
+  .hero__media,
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__media {
+    z-index: -2;
+  }
+
+  .hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 61%;
+    filter: saturate(0.82) contrast(1.03);
+    animation: hero-breathe 20s var(--ease-out) both;
+  }
+
+  .hero__veil {
+    z-index: -1;
+    background:
+      linear-gradient(95deg, rgba(5, 23, 18, 0.92) 0%, rgba(5, 23, 18, 0.72) 35%, rgba(5, 23, 18, 0.13) 67%, rgba(5, 23, 18, 0.4) 100%),
+      linear-gradient(to top, rgba(4, 19, 15, 0.95) 0%, rgba(4, 19, 15, 0.15) 42%, rgba(4, 19, 15, 0.46) 100%);
+  }
+
+  .hero__inner {
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-top: calc(var(--header-height) + clamp(4rem, 10vh, 8rem));
+    padding-bottom: clamp(3.5rem, 7vh, 6rem);
+  }
+
+  .hero__copy {
+    max-width: 70rem;
+  }
+
+  .hero__kicker {
+    margin-bottom: clamp(1.5rem, 3.5vh, 2.5rem);
+    animation: fade-up 0.8s 0.1s var(--ease-out) both;
+  }
+
+  .hero__title {
+    max-width: 11ch;
+    color: var(--cream);
+    font-size: clamp(3.65rem, 8.5vw, 8.8rem);
+    font-weight: 430;
+    font-variation-settings: 'opsz' 144, 'SOFT' 70, 'WONK' 1;
+    letter-spacing: -0.062em;
+    line-height: 0.88;
+    animation: fade-up 0.9s 0.18s var(--ease-out) both;
+    text-wrap: balance;
+  }
+
+  .hero__title em {
+    position: relative;
+    color: var(--gold);
+    font-weight: 380;
+  }
+
+  .hero__title em::after {
+    content: '';
+    position: absolute;
+    right: 0.03em;
+    bottom: -0.02em;
+    left: 0.03em;
+    height: 0.06em;
+    border-radius: 100%;
+    background: currentColor;
+    opacity: 0.55;
+    transform: rotate(-1.5deg);
+  }
+
+  .hero__lead {
+    max-width: 47ch;
+    margin-top: clamp(1.5rem, 3.2vh, 2.4rem);
+    color: rgba(246, 240, 228, 0.78);
+    font-size: clamp(1rem, 1.35vw, 1.2rem);
+    line-height: 1.65;
+    animation: fade-up 0.9s 0.3s var(--ease-out) both;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: clamp(1.8rem, 3.5vh, 2.8rem);
+    animation: fade-up 0.9s 0.42s var(--ease-out) both;
+  }
+
+  .hero__aside {
+    display: flex;
+    flex: none;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 0.5rem;
+    color: var(--cream);
+    animation: fade-up 1s 0.55s var(--ease-out) both;
+  }
+
+  .hero__seal {
+    color: var(--cream);
+  }
+
+  .hero__aside-note {
+    max-width: 17ch;
+    color: rgba(246, 240, 228, 0.54);
+    font-size: 0.67rem;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .hero__footer {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba(246, 240, 228, 0.18);
+    animation: fade-in 1.2s 0.7s var(--ease-out) both;
+  }
+
+  .hero__footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1.4fr;
+    gap: 1.5rem;
+    align-items: center;
+    padding-block: 1.1rem;
+    color: rgba(246, 240, 228, 0.44);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .hero__footer-inner > p:first-child {
+    color: rgba(246, 240, 228, 0.72);
+  }
+
+  .hero__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: rgba(246, 240, 228, 0.72);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .hero__scroll span {
+    position: relative;
+    display: block;
+    width: 3rem;
+    height: 1px;
+    overflow: hidden;
+    background: rgba(246, 240, 228, 0.26);
+  }
+
+  .hero__scroll span::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    animation: scroll-line 2.4s var(--ease-soft) infinite;
+  }
+
+  .hero__credit {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .hero__credit span {
+    margin-left: 0.35rem;
+    color: rgba(246, 240, 228, 0.3);
+  }
+
+  @keyframes hero-breathe {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      translate: 0 24px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scroll-line {
+    0% {
+      transform: translateX(-100%);
+    }
+    60%,
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* ==================== MARQUEE ==================== */
+
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid rgba(6, 26, 20, 0.25);
+    border-bottom: 1px solid rgba(6, 26, 20, 0.25);
+    background: var(--gold);
+    color: var(--forest-950);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-slide 38s linear infinite;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  .marquee__group {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: clamp(1.8rem, 3.2vw, 3.4rem);
+    padding: 0.85rem clamp(0.9rem, 1.6vw, 1.7rem);
+    padding-right: clamp(1.8rem, 3.2vw, 3.4rem);
+  }
+
+  .marquee__group span {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.55vw, 1.4rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .marquee__italic {
+    font-style: italic;
+    font-weight: 380 !important;
+  }
+
+  .marquee__group i {
+    color: var(--maroon);
+    font-size: 0.65rem;
+    font-style: normal;
+    opacity: 0.8;
+  }
+
+  @keyframes marquee-slide {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ==================== MANIFIESTO ==================== */
+
+  .manifesto {
+    overflow: hidden;
+    background: var(--cream);
+    padding-bottom: clamp(4.5rem, 8vw, 8rem);
+  }
+
+  .manifesto__sun {
+    position: absolute;
+    top: clamp(2rem, 6vw, 5rem);
+    right: -8rem;
+    width: clamp(22rem, 42vw, 38rem);
+    aspect-ratio: 1;
+    border: 1px solid rgba(138, 94, 23, 0.13);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .manifesto__sun::before,
+  .manifesto__sun::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(138, 94, 23, 0.1);
+    border-radius: 50%;
+  }
+
+  .manifesto__sun::before {
+    inset: 12%;
+  }
+
+  .manifesto__sun::after {
+    inset: 27%;
+  }
+
+  .manifesto__top {
+    position: relative;
+    z-index: 1;
+  }
+
+  .manifesto__title {
+    max-width: 13ch;
+    margin-top: 1.8rem;
+    color: var(--forest-900);
+  }
+
+  .manifesto__title em {
+    color: var(--gold-deep);
+  }
+
+  .manifesto__bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2.5rem, 8vw, 9rem);
+    align-items: start;
+    margin-top: clamp(3.5rem, 7vw, 6.5rem);
+    padding-left: clamp(0rem, 8vw, 12rem);
+  }
+
+  .manifesto__copy {
+    max-width: 46ch;
+  }
+
+  .manifesto__signature {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 2rem;
+    color: var(--gold-deep);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+
+  .manifesto__signature span {
+    display: block;
+    width: 2.4rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .principles {
+    position: relative;
+    padding: clamp(1.7rem, 3vw, 2.8rem);
+    border-radius: var(--radius-md);
+    background: var(--forest-900);
+    color: var(--cream);
+    box-shadow: 0 24px 60px rgba(11, 42, 33, 0.16);
+  }
+
+  .principles__head h3 {
+    max-width: 12ch;
+    margin-top: 0.9rem;
+  }
+
+  .principles__list {
+    display: grid;
+    margin-top: 1.8rem;
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .principles__list li {
+    display: grid;
+    grid-template-columns: 2.1rem 1fr;
+    gap: 0.5rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line-dark);
+  }
+
+  .principles__list span {
+    padding-top: 0.2rem;
+    color: var(--gold);
+    font-size: 0.6rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+  }
+
+  .principles__list p {
+    color: rgba(246, 240, 228, 0.65);
+    font-size: 0.82rem;
+    line-height: 1.62;
+  }
+
+  .principles__list strong {
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .principles__foot {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.4rem;
+  }
+
+  .principles__foot :global(.seal) {
+    flex: none;
+    color: var(--gold);
+  }
+
+  .principles__foot p {
+    max-width: 22ch;
+    color: rgba(246, 240, 228, 0.42);
+    font-size: 0.66rem;
+    line-height: 1.5;
+  }
+
+  /* ==================== TERRITORIO ==================== */
+
+  .territory {
+    overflow: hidden;
+  }
+
+  .territory__head {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+  }
+
+  .territory__head .kicker {
+    grid-column: 1 / -1;
+  }
+
+  .territory__head h2 {
+    max-width: 11ch;
+  }
+
+  .territory__head h2 em {
+    color: var(--gold);
+  }
+
+  .territory__intro {
+    padding-bottom: 0.5rem;
+  }
+
+  .territory__intro .lede {
+    color: rgba(246, 240, 228, 0.7);
+  }
+
+  .territory__intro p + p {
+    margin-top: 1.1rem;
+    color: rgba(246, 240, 228, 0.5);
+    font-size: 0.86rem;
+    line-height: 1.7;
+  }
+
+  .territory__body {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    margin-top: clamp(3rem, 6vw, 5.5rem);
+  }
+
+  .territory__map {
+    padding: clamp(0.4rem, 1.5vw, 1.4rem);
+    border: 1px solid rgba(246, 240, 228, 0.1);
+    border-radius: var(--radius-md);
+    background: rgba(246, 240, 228, 0.025);
+  }
+
+  .territory__list {
+    display: grid;
+  }
+
+  .department {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 1rem;
+    padding-block: clamp(1rem, 2vw, 1.35rem);
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .department:last-child {
+    border-bottom: 1px solid var(--line-dark);
+  }
+
+  .department__index {
+    padding-top: 0.45rem;
+    color: var(--gold);
+    font-size: 0.6rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+  }
+
+  .department__name {
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2vw, 1.9rem);
+    font-weight: 450;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+  }
+
+  .department p {
+    max-width: 38ch;
+    margin-top: 0.35rem;
+    color: rgba(246, 240, 228, 0.48);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .territory__gallery {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(0.8rem, 2vw, 1.8rem);
+    align-items: start;
+    margin-top: clamp(3rem, 6vw, 5.5rem);
+  }
+
+  .territory-photo {
+    margin: 0;
+  }
+
+  .territory-photo--wide {
+    padding-right: clamp(0rem, 2vw, 2rem);
+  }
+
+  .territory-photo--tall {
+    margin-top: clamp(1.5rem, 5vw, 5rem);
+  }
+
+  .territory-photo__frame {
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--forest-800);
+  }
+
+  .territory-photo--wide .territory-photo__frame {
+    aspect-ratio: 1.8 / 1;
+  }
+
+  .territory-photo--tall .territory-photo__frame {
+    aspect-ratio: 1.15 / 1;
+  }
+
+  .territory-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.1s var(--ease-out);
+  }
+
+  .territory-photo:hover img {
+    transform: scale(1.035);
+  }
+
+  .territory-photo figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    color: rgba(246, 240, 228, 0.42);
+    font-size: 0.63rem;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .territory-photo figcaption span {
+    color: rgba(246, 240, 228, 0.27);
+  }
+
+  /* ==================== SABERES ==================== */
+
+  .saberes {
+    overflow: hidden;
+  }
+
+  .saberes__head {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+    gap: clamp(2rem, 6vw, 7rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .saberes__title {
+    margin-top: 1.4rem;
+    color: var(--forest-900);
+  }
+
+  .saberes__title em {
+    color: var(--gold-deep);
+  }
+
+  .saberes__note {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .saberes__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--gold-deep);
+    font-size: 0.63rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .saberes__hint::before {
+    content: '';
+    width: 1.9rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  .saberes__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  }
+
+  .saber-card {
+    --card-bg: var(--forest-800);
+    --card-fg: var(--cream);
+    --card-muted: rgba(246, 240, 228, 0.64);
+    --card-line: rgba(246, 240, 228, 0.17);
+    position: relative;
+    display: flex;
+    min-height: clamp(23rem, 31vw, 30rem);
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: clamp(1.25rem, 2vw, 1.8rem);
+    border: 1px solid rgba(20, 37, 30, 0.1);
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    color: var(--card-fg);
+    text-decoration: none;
+    isolation: isolate;
+    transition:
+      transform 0.45s var(--ease-out),
+      box-shadow 0.45s var(--ease-out);
+  }
+
+  .saber-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 45px rgba(11, 42, 33, 0.18);
+  }
+
+  .saber-card::after {
+    content: '';
+    position: absolute;
+    right: -5rem;
+    bottom: -8rem;
+    z-index: -1;
+    width: 16rem;
+    aspect-ratio: 1;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    opacity: 0.1;
+  }
+
+  .saber-card--photo-marimba::after,
+  .saber-card--photo-cocina::after {
+    display: none;
+  }
+
+  .saber-card--sage {
+    --card-bg: #d7e0cc;
+    --card-fg: var(--forest-900);
+    --card-muted: rgba(20, 37, 30, 0.65);
+    --card-line: rgba(20, 37, 30, 0.18);
+  }
+
+  .saber-card--gold {
+    --card-bg: var(--gold);
+    --card-fg: var(--forest-950);
+    --card-muted: rgba(6, 26, 20, 0.65);
+    --card-line: rgba(6, 26, 20, 0.22);
+  }
+
+  .saber-card--maroon {
+    --card-bg: var(--maroon);
+    --card-fg: var(--cream);
+    --card-muted: rgba(246, 240, 228, 0.62);
+    --card-line: rgba(246, 240, 228, 0.16);
+  }
+
+  .saber-card__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+
+  .saber-card__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(6, 26, 20, 0.94) 0%, rgba(6, 26, 20, 0.47) 46%, rgba(6, 26, 20, 0.16) 100%),
+      linear-gradient(110deg, rgba(6, 26, 20, 0.5), transparent 60%);
+  }
+
+  .saber-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease-out);
+    filter: saturate(0.82);
+  }
+
+  .saber-card:hover .saber-card__media img {
+    transform: scale(1.045);
+  }
+
+  .saber-card--photo-marimba,
+  .saber-card--photo-cocina {
+    --card-bg: var(--forest-800);
+    --card-fg: var(--cream);
+    --card-muted: rgba(246, 240, 228, 0.73);
+    --card-line: rgba(246, 240, 228, 0.2);
+  }
+
+  .saber-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .saber-card__number {
+    color: var(--card-muted);
+    font-size: 0.62rem;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+  }
+
+  .saber-card__icon {
+    width: 2.7rem;
+    height: 2.7rem;
+    color: var(--card-fg);
+    opacity: 0.78;
+  }
+
+  .saber-card__body {
+    position: relative;
+    z-index: 1;
+    max-width: 30ch;
+  }
+
+  .saber-card__label {
+    margin-bottom: 0.55rem;
+    color: var(--card-muted);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .saber-card__title {
+    color: var(--card-fg);
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.2vw, 2.15rem);
+    font-weight: 450;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+  }
+
+  .saber-card__copy {
+    margin-top: 0.8rem;
+    color: var(--card-muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .saber-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1.4rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--card-line);
+    color: var(--card-fg);
+    font-size: 0.63rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .saber-card__link svg {
+    width: 0.85rem;
+    height: 0.85rem;
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  .saber-card:hover .saber-card__link svg {
+    transform: translateX(0.25rem);
+  }
+
+  .saber-card__ghost {
+    position: absolute;
+    right: 0.75rem;
+    bottom: -1.8rem;
+    z-index: -1;
+    color: currentColor;
+    font-family: var(--font-display);
+    font-size: 9rem;
+    font-weight: 500;
+    letter-spacing: -0.08em;
+    line-height: 1;
+    opacity: 0.045;
+    pointer-events: none;
+  }
+
+  .saberes__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-top: clamp(2.2rem, 4vw, 3.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .saberes__foot p {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+  }
+
+  .saberes__foot strong {
+    color: var(--forest-900);
+  }
+
+  /* ==================== CITA ==================== */
+
+  .quote-band {
+    position: relative;
+    overflow: hidden;
+    background: var(--forest-950);
+    color: var(--cream);
+    isolation: isolate;
+  }
+
+  .quote-band__media,
+  .quote-band__veil {
+    position: absolute;
+    inset: 0;
+  }
+
+  .quote-band__media {
+    z-index: -2;
+  }
+
+  .quote-band__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 50%;
+    filter: saturate(0.68) contrast(1.04);
+  }
+
+  .quote-band__veil {
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(6, 26, 20, 0.9) 0%, rgba(6, 26, 20, 0.55) 56%, rgba(6, 26, 20, 0.66) 100%),
+      linear-gradient(to top, rgba(6, 26, 20, 0.82), transparent 55%);
+  }
+
+  .quote-band__inner {
+    position: relative;
+    padding-block: clamp(5rem, 11vw, 10rem);
+  }
+
+  .quote-band__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--cream);
+  }
+
+  .quote-band__top :global(.seal) {
+    color: var(--gold);
+  }
+
+  .quote-band__quote {
+    max-width: 63rem;
+    margin: clamp(3rem, 6vw, 5rem) auto clamp(2rem, 4vw, 3rem);
+    text-align: center;
+  }
+
+  .quote-band__quote blockquote {
+    margin: 0;
+  }
+
+  .quote-band__quote blockquote p {
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 5.2vw, 5.7rem);
+    font-weight: 420;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 1;
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .quote-band__quote blockquote em {
+    color: var(--gold);
+    font-weight: 370;
+  }
+
+  .quote-band__quote figcaption {
+    margin-top: 2rem;
+    color: rgba(246, 240, 228, 0.45);
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .quote-band__credit {
+    color: rgba(246, 240, 228, 0.35);
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    text-align: right;
+  }
+
+  .quote-band__credit span {
+    margin-left: 0.3rem;
+    opacity: 0.65;
+  }
+
+  /* ==================== PARTICIPA ==================== */
+
+  .participate__head {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: 1.4rem clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .participate__head .kicker {
+    grid-column: 1 / -1;
+  }
+
+  .participate__head h2 {
+    color: var(--forest-900);
+  }
+
+  .participate__head h2 em {
+    color: var(--gold-deep);
+  }
+
+  .participate__head .lede {
+    padding-bottom: 0.4rem;
+  }
+
+  .participate__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4.3fr);
+    gap: clamp(2rem, 7vw, 8rem);
+    align-items: start;
+  }
+
+  .participate__steps {
+    display: grid;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 4.8rem 1fr;
+    gap: clamp(1rem, 2.5vw, 2.3rem);
+    padding-block: clamp(1.6rem, 3vw, 2.4rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .step:last-of-type {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .step__number {
+    color: var(--gold-deep);
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 4vw, 4rem);
+    font-weight: 380;
+    letter-spacing: -0.07em;
+    line-height: 0.8;
+  }
+
+  .step__title {
+    color: var(--forest-900);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    font-weight: 470;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+
+  .step p {
+    max-width: 48ch;
+    margin-top: 0.55rem;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .participate__button {
+    justify-self: start;
+    margin-top: 2rem;
+  }
+
+  .participate__note {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.7rem, 3vw, 2.6rem);
+    border-radius: var(--radius-md);
+    background: var(--forest-900);
+    color: var(--cream);
+  }
+
+  .participate__note > :global(.seal) {
+    margin-bottom: 2.2rem;
+    color: var(--gold);
+  }
+
+  .participate__note h3 {
+    max-width: 11ch;
+    margin-top: 0.8rem;
+  }
+
+  .participate__note ul {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.8rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .participate__note li {
+    position: relative;
+    padding-left: 1.2rem;
+    color: rgba(246, 240, 228, 0.64);
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+
+  .participate__note li::before {
+    content: '✦';
+    position: absolute;
+    top: 0.05rem;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.5rem;
+  }
+
+  .participate__note-small {
+    margin-top: 1.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line-dark);
+    color: rgba(246, 240, 228, 0.4);
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+
+  /* ==================== CTA ==================== */
+
+  .cta-band {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(4.5rem, 8vw, 8rem);
+    isolation: isolate;
+  }
+
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -10rem;
+    z-index: -1;
+    width: clamp(28rem, 55vw, 56rem);
+    aspect-ratio: 1;
+    border: 1px solid rgba(6, 26, 20, 0.13);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow:
+      0 0 0 4rem rgba(6, 26, 20, 0.035),
+      0 0 0 8rem rgba(6, 26, 20, 0.025);
+  }
+
+  .cta-band__inner {
+    position: relative;
+  }
+
+  .cta-band .kicker {
+    color: rgba(6, 26, 20, 0.58);
+  }
+
+  .cta-band__main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-top: clamp(1.8rem, 3vw, 2.7rem);
+  }
+
+  .cta-band h2 {
+    max-width: 10ch;
+    color: var(--forest-950);
+  }
+
+  .cta-band h2 em {
+    color: var(--maroon);
+  }
+
+  .cta-disc {
+    display: flex;
+    width: clamp(9.5rem, 15vw, 13rem);
+    aspect-ratio: 1;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid rgba(6, 26, 20, 0.45);
+    border-radius: 50%;
+    color: var(--forest-950);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      background-color 0.35s var(--ease-soft),
+      color 0.35s var(--ease-soft),
+      transform 0.45s var(--ease-out);
+  }
+
+  .cta-disc svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .cta-disc:hover {
+    background: var(--forest-950);
+    color: var(--cream);
+    transform: rotate(-4deg) scale(1.03);
+  }
+
+  .cta-disc:hover svg {
+    transform: translate(0.15rem, -0.15rem);
+  }
+
+  .cta-band__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: clamp(2.6rem, 5vw, 4.5rem);
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(6, 26, 20, 0.22);
+    color: rgba(6, 26, 20, 0.63);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ==================== RESPONSIVE ==================== */
+
+  @media (max-width: 1100px) {
+    .hero__aside {
+      display: none;
+    }
+
+    .hero__title {
+      max-width: 12ch;
+    }
+
+    .manifesto__bottom {
+      padding-left: 0;
+    }
+
+    .saberes__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .saber-card {
+      min-height: 26rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero__inner {
+      padding-top: calc(var(--header-height) + 4rem);
+      padding-bottom: 2.5rem;
+    }
+
+    .hero__title {
+      font-size: clamp(3.4rem, 12vw, 6.2rem);
+    }
+
+    .hero__lead {
+      max-width: 38ch;
+    }
+
+    .hero__footer-inner {
+      grid-template-columns: 1fr auto;
+      row-gap: 0.5rem;
+    }
+
+    .hero__scroll {
+      justify-self: end;
+    }
+
+    .hero__credit {
+      grid-column: 1 / -1;
+      justify-self: start;
+      text-align: left;
+    }
+
+    .manifesto__top h2 {
+      max-width: 100%;
+    }
+
+    .manifesto__bottom,
+    .territory__head,
+    .territory__body,
+    .saberes__head,
+    .participate__head,
+    .participate__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .manifesto__bottom {
+      gap: 2.5rem;
+    }
+
+    .principles {
+      max-width: 38rem;
+    }
+
+    .territory__head .kicker,
+    .participate__head .kicker {
+      grid-column: auto;
+    }
+
+    .territory__intro {
+      max-width: 46rem;
+    }
+
+    .territory__body {
+      gap: 2rem;
+    }
+
+    .territory__map {
+      max-width: 43rem;
+    }
+
+    .territory__list {
+      max-width: 44rem;
+    }
+
+    .saberes__note {
+      max-width: 36rem;
+    }
+
+    .participate__note {
+      max-width: 32rem;
+    }
+
+    .participate__button {
+      margin-top: 1.8rem;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .hero {
+      min-height: 100svh;
+    }
+
+    .hero__inner {
+      padding-top: calc(var(--header-height) + 2.5rem);
+    }
+
+    .hero__media img {
+      object-position: center 64%;
+    }
+
+    .hero__actions {
+      gap: 0.6rem;
+    }
+
+    .hero__actions .btn {
+      flex: 1 1 auto;
+    }
+
+    .hero__footer-inner {
+      padding-block: 0.9rem;
+      font-size: 0.56rem;
+    }
+
+    .hero__scroll {
+      font-size: 0;
+      gap: 0;
+    }
+
+    .hero__scroll span {
+      width: 2rem;
+    }
+
+    .saberes__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .saber-card {
+      min-height: 23rem;
+    }
+
+    .territory__gallery {
+      grid-template-columns: 1fr;
+    }
+
+    .territory-photo--wide {
+      padding-right: 0;
+    }
+
+    .territory-photo--tall {
+      margin-top: 0.5rem;
+    }
+
+    .territory-photo--wide .territory-photo__frame,
+    .territory-photo--tall .territory-photo__frame {
+      aspect-ratio: 1.35 / 1;
+    }
+
+    .quote-band__quote {
+      text-align: left;
+    }
+
+    .cta-band__main {
+      grid-template-columns: 1fr;
+      gap: 2.4rem;
+    }
+
+    .cta-disc {
+      width: 9rem;
+      justify-self: start;
+    }
+
+    .cta-band::before {
+      right: -18rem;
+    }
+
+    .step {
+      grid-template-columns: 3.3rem 1fr;
+      gap: 0.9rem;
+    }
+
+    .step__number {
+      font-size: 2.5rem;
+    }
+
+    .saberes__foot {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__title {
+      font-size: clamp(3rem, 14.5vw, 4.7rem);
+      letter-spacing: -0.06em;
+    }
+
+    .hero__lead {
+      font-size: 0.95rem;
+    }
+
+    .hero__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero__actions .btn {
+      width: 100%;
+    }
+
+    .hero__credit span {
+      display: none;
+    }
+
+    .manifesto__title {
+      font-size: clamp(2.6rem, 12vw, 4.2rem);
+    }
+
+    .principles {
+      padding: 1.4rem;
+    }
+
+    .principles__list li {
+      grid-template-columns: 1.6rem 1fr;
+    }
+
+    .quote-band__credit {
+      text-align: left;
+    }
+
+    .cta-band__foot {
+      flex-direction: column;
+    }
+  }
+</style>

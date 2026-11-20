@@ -1,0 +1,1934 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryIcon from '../components/CategoryIcon.astro';
+import Seal from '../components/Seal.astro';
+
+import coastImage from '../assets/images/choco-costa.jpg';
+
+const categories = [
+  { value: 'oralidad', label: 'Oralidad', icon: 'oralidad' as const },
+  { value: 'musica', label: 'Música', icon: 'musica' as const },
+  { value: 'medicina', label: 'Medicina', icon: 'medicina' as const },
+  { value: 'tejido', label: 'Tejido', icon: 'tejido' as const },
+  { value: 'cocina', label: 'Cocina', icon: 'cocina' as const },
+  { value: 'territorio', label: 'Territorio', icon: 'territorio' as const },
+  { value: 'otro', label: 'Otro saber', icon: 'otro' as const },
+];
+
+const departments = ['Chocó', 'Valle del Cauca', 'Cauca', 'Nariño', 'Otro territorio'];
+---
+
+<BaseLayout
+  title="Comparte tu saber"
+  description="Comparte un saber ancestral del Pacífico colombiano. Cuéntanos su historia, su territorio y sus cuidados. Puedes adjuntar fotos, audios o documentos."
+  headerVariant="solid"
+  bodyClass="share-page"
+>
+  <!-- ==================== INTRO ==================== -->
+  <section class="form-hero">
+    <div class="page-shell">
+      <div class="form-hero__bar">
+        <a class="back-link" href="/">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M13.5 8h-11M6 3.5 1.5 8 6 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Volver al archivo
+        </a>
+        <p>Archivo abierto · Aporte comunitario</p>
+      </div>
+
+      <div class="form-hero__grid">
+        <div class="form-hero__copy">
+          <p class="kicker">Tu voz también es patrimonio</p>
+          <h1 class="display display--xl form-hero__title">
+            Si lo sabes,<br />
+            <em>no se pierda.</em>
+          </h1>
+          <p class="lede">
+            Comparte una memoria, un oficio o una historia que hayas aprendido
+            en el Pacífico colombiano. No necesitas escribir perfecto:
+            necesitas escribir con verdad.
+          </p>
+
+          <ul class="form-hero__notes" aria-label="Características del aporte">
+            <li>5 minutos</li>
+            <li>Archivos opcionales</li>
+            <li>Autoría reconocida</li>
+          </ul>
+        </div>
+
+        <div class="form-hero__visual">
+          <figure class="form-hero__figure">
+            <Image
+              src={coastImage}
+              alt="Costa selvática del Chocó vista desde el océano, con palmas inclinadas sobre el agua."
+              widths={[520, 820, 1100]}
+              sizes="(max-width: 900px) 100vw, 34vw"
+              loading="eager"
+              quality={82}
+            />
+            <figcaption>
+              Océano Pacífico en el Chocó · Foto de Luis Pérez
+              <span>CC BY 2.0</span>
+            </figcaption>
+          </figure>
+
+          <div class="form-hero__aside">
+            <Seal size="sm" />
+            <p>La memoria también se cuida. Por eso pedimos permiso antes de publicar.</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="form-steps" aria-label="Etapas del formulario">
+        <a href="#paso-1"><span>01</span> Quién comparte</a>
+        <a href="#paso-2"><span>02</span> El saber</a>
+        <a href="#paso-3"><span>03</span> Archivos</a>
+        <a href="#paso-4"><span>04</span> Permiso</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ==================== FORMULARIO ==================== -->
+  <section class="form-section" id="formulario" aria-labelledby="form-title">
+    <div class="page-shell">
+      <div class="form-section__intro">
+        <p class="kicker">Formulario de aporte</p>
+        <h2 class="display display--md" id="form-title">Cuéntanos tu saber.</h2>
+        <p>
+          Los campos marcados con <span class="required">*</span> son
+          obligatorios. Puedes guardar el saber con tu nombre o con un
+          seudónimo.
+        </p>
+      </div>
+
+      <div class="form-layout">
+        <aside class="form-guide">
+          <div class="form-guide__inner">
+            <p class="kicker">Antes de empezar</p>
+            <h3 class="display display--sm">Un aporte, tres cuidados.</h3>
+
+            <ol class="guide-list">
+              <li>
+                <span>01</span>
+                <p><strong>Contexto.</strong> Nombra el territorio, la comunidad y a quien te enseñó.</p>
+              </li>
+              <li>
+                <span>02</span>
+                <p><strong>Permiso.</strong> Si el saber es colectivo, cuenta con el acuerdo de tu comunidad.</p>
+              </li>
+              <li>
+                <span>03</span>
+                <p><strong>Cuidado.</strong> Define si puede publicarse y cómo quieres que se comparta.</p>
+              </li>
+            </ol>
+
+            <div class="progress-card">
+              <div class="progress-card__head">
+                <span>Tu avance</span>
+                <span data-progress-label>0%</span>
+              </div>
+              <div
+                class="progress-card__track"
+                role="progressbar"
+                aria-label="Avance del formulario"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                data-progress-track
+              >
+                <span data-progress-bar></span>
+              </div>
+              <p data-progress-text>Empieza por contarnos quién eres.</p>
+            </div>
+
+            <div class="guide-privacy">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <rect x="4.5" y="8.5" width="11" height="8" rx="2" stroke="currentColor" stroke-width="1.3" />
+                <path d="M7 8.5V6a3 3 0 0 1 6 0v2.5M10 12v1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+              </svg>
+              <p>
+                Tu correo y tus archivos se guardan de forma privada para
+                revisión. Nunca publicaremos tus datos de contacto.
+              </p>
+            </div>
+          </div>
+        </aside>
+
+        <div class="form-card">
+          <form
+            action="/api/saberes"
+            method="post"
+            enctype="multipart/form-data"
+            data-saber-form
+          >
+            <div
+              class="form-status"
+              role="alert"
+              tabindex="-1"
+              aria-live="assertive"
+              data-form-status
+              hidden
+            ></div>
+
+            <fieldset class="form-block" id="paso-1">
+              <legend class="form-block__legend">
+                <span class="form-block__number">01</span>
+                <span class="form-block__name">Quién comparte</span>
+              </legend>
+              <p class="form-block__hint">
+                Queremos reconocer la voz detrás de cada saber.
+              </p>
+
+              <div class="field-grid">
+                <div class="field">
+                  <label class="field__label" for="nombre">
+                    Nombre o seudónimo
+                    <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    class="input"
+                    id="nombre"
+                    name="nombre"
+                    type="text"
+                    required
+                    minlength="2"
+                    maxlength="80"
+                    autocomplete="name"
+                    placeholder="Ej. Ana María o «Semilla del manglar»"
+                  />
+                  <p class="field__hint">Puedes elegir cómo quieres aparecer.</p>
+                </div>
+
+                <div class="field">
+                  <label class="field__label" for="comunidad">
+                    Comunidad, vereda o barrio
+                    <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    class="input"
+                    id="comunidad"
+                    name="comunidad"
+                    type="text"
+                    required
+                    minlength="2"
+                    maxlength="140"
+                    placeholder="Ej. Consejo comunitario de La Plata"
+                  />
+                </div>
+
+                <div class="field">
+                  <label class="field__label" for="departamento">
+                    Departamento
+                    <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <select class="select" id="departamento" name="departamento" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    {departments.map((department) => (
+                      <option value={department}>{department}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label class="field__label" for="municipio">
+                    Municipio o distrito
+                    <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    class="input"
+                    id="municipio"
+                    name="municipio"
+                    type="text"
+                    required
+                    minlength="2"
+                    maxlength="120"
+                    autocomplete="address-level2"
+                    placeholder="Ej. Bahía Solano"
+                  />
+                </div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="correo">
+                    Correo electrónico
+                    <span class="field__optional">opcional</span>
+                  </label>
+                  <input
+                    class="input"
+                    id="correo"
+                    name="correo"
+                    type="email"
+                    maxlength="180"
+                    autocomplete="email"
+                    placeholder="tu@correo.com"
+                    aria-describedby="correo-hint"
+                  />
+                  <p class="field__hint" id="correo-hint">
+                    Solo lo usaremos si necesitamos ampliar la información.
+                    Nunca se publica.
+                  </p>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-block" id="paso-2">
+              <legend class="form-block__legend">
+                <span class="form-block__number">02</span>
+                <span class="form-block__name">El saber</span>
+              </legend>
+              <p class="form-block__hint">
+                Cuéntalo con tus palabras. Lo importante no es la perfección,
+                sino la memoria.
+              </p>
+
+              <div class="field">
+                <label class="field__label" for="titulo">
+                  Dale un nombre a tu saber
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="input"
+                  id="titulo"
+                  name="titulo"
+                  type="text"
+                  required
+                  minlength="3"
+                  maxlength="140"
+                  placeholder="Ej. El remedio de mi abuela para el mal de ojo"
+                />
+              </div>
+
+              <div class="field category-field">
+                <p class="field__label">
+                  ¿A qué familia pertenece?
+                  <span class="required" aria-hidden="true">*</span>
+                </p>
+                <div class="category-grid">
+                  {categories.map((category) => (
+                    <label class="category-option">
+                      <input
+                        type="radio"
+                        name="categoria"
+                        value={category.value}
+                        required
+                      />
+                      <CategoryIcon name={category.icon} class="category-option__icon" />
+                      <span>{category.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="descripcion">
+                  Cuéntanos de qué se trata
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+                <textarea
+                  class="textarea"
+                  id="descripcion"
+                  name="descripcion"
+                  rows="6"
+                  required
+                  minlength="20"
+                  maxlength="3000"
+                  placeholder="¿Qué es este saber? ¿Para qué se usa? ¿Qué historias, personas o lugares lo acompañan?"
+                  aria-describedby="descripcion-hint"
+                ></textarea>
+                <div class="field__meta" id="descripcion-hint">
+                  <span>Cuéntalo con detalles: entre 20 y 3.000 caracteres.</span>
+                  <span data-description-count>0 / 3.000</span>
+                </div>
+              </div>
+
+              <div class="field-grid form-block__fields">
+                <div class="field">
+                  <label class="field__label" for="origen">
+                    ¿De quién lo aprendiste?
+                    <span class="field__optional">opcional</span>
+                  </label>
+                  <input
+                    class="input"
+                    id="origen"
+                    name="origen"
+                    type="text"
+                    maxlength="160"
+                    placeholder="Ej. Mi abuela Rosa, del río Naya"
+                  />
+                </div>
+
+                <div class="field">
+                  <label class="field__label" for="idioma">
+                    Lengua en la que se transmite
+                    <span class="field__optional">opcional</span>
+                  </label>
+                  <input
+                    class="input"
+                    id="idioma"
+                    name="idioma"
+                    type="text"
+                    maxlength="100"
+                    placeholder="Ej. Español, emberá, palenquero…"
+                  />
+                </div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="transmision">
+                    ¿Cómo se practica o se transmite?
+                    <span class="field__optional">opcional</span>
+                  </label>
+                  <textarea
+                    class="textarea"
+                    id="transmision"
+                    name="transmision"
+                    rows="4"
+                    maxlength="1500"
+                    placeholder="Ej. Se enseña durante la cosecha, cuando la marea está baja, o en las reuniones de la comunidad."
+                  ></textarea>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-block" id="paso-3">
+              <legend class="form-block__legend">
+                <span class="form-block__number">03</span>
+                <span class="form-block__name">Voces y archivos</span>
+              </legend>
+              <p class="form-block__hint">
+                Si tienes una foto, una grabación o un documento, súmalo. A
+                veces la memoria también vive en una imagen o en una voz.
+              </p>
+
+              <div class="field">
+                <label class="field__label" for="archivos">
+                  Adjunta fotos, audios o documentos
+                  <span class="field__optional">opcional</span>
+                </label>
+
+                <div class="dropzone" data-dropzone>
+                  <input
+                    class="dropzone__input"
+                    id="archivos"
+                    name="archivos"
+                    type="file"
+                    data-file-input
+                    accept=".jpg,.jpeg,.png,.webp,.gif,.pdf,.mp3,.wav,.ogg,.m4a,.mp4,.mov,.webm"
+                    multiple
+                    aria-describedby="archivos-hint"
+                  />
+                  <div class="dropzone__ui" aria-hidden="true">
+                    <svg viewBox="0 0 28 28" fill="none">
+                      <path d="M14 19V5M8.5 10.5 14 5l5.5 5.5M5 19v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <p class="dropzone__title">
+                      Arrastra tus archivos aquí
+                      <span>o selecciónalos desde tu dispositivo</span>
+                    </p>
+                    <p class="dropzone__hint" id="archivos-hint">
+                      Hasta 8 archivos · 10 MB por archivo. JPG, PNG, WEBP,
+                      GIF, PDF, MP3, WAV, OGG, M4A, MP4, MOV o WEBM.
+                    </p>
+                  </div>
+                </div>
+
+                <p class="dropzone__error" role="alert" data-file-error></p>
+                <ul class="file-list" data-file-list aria-live="polite"></ul>
+              </div>
+
+              <div class="field form-block__fields">
+                <label class="field__label" for="enlace">
+                  Enlace a un audio o video
+                  <span class="field__optional">opcional</span>
+                </label>
+                <input
+                  class="input"
+                  id="enlace"
+                  name="enlace"
+                  type="url"
+                  maxlength="500"
+                  placeholder="https://..."
+                  aria-describedby="enlace-hint"
+                />
+                <p class="field__hint" id="enlace-hint">
+                  Si el saber vive en otro lugar, comparte aquí el enlace
+                  público.
+                </p>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-block" id="paso-4">
+              <legend class="form-block__legend">
+                <span class="form-block__number">04</span>
+                <span class="form-block__name">Permiso y cuidado</span>
+              </legend>
+              <p class="form-block__hint">
+                Tu palabra sigue siendo tuya. Estos acuerdos nos permiten
+                cuidarla.
+              </p>
+
+              <div class="consent-box">
+                <label class="check">
+                  <input type="checkbox" name="autoriza" value="si" required />
+                  <span>
+                    Autorizo que este saber haga parte del archivo comunitario
+                    y confirmo que tengo permiso para compartirlo. Entiendo que
+                    la autoría se reconocerá y que puedo solicitar cambios.
+                    <span class="required" aria-hidden="true">*</span>
+                  </span>
+                </label>
+
+                <label class="check">
+                  <input type="checkbox" name="contacto" value="si" />
+                  <span>
+                    Acepto que el equipo del archivo me contacte si necesita
+                    ampliar la información. <span class="field__optional">opcional</span>
+                  </span>
+                </label>
+
+              </div>
+
+              <p class="consent-note">
+                Las fotos, audios y documentos que adjuntas serán revisados
+                antes de publicarse. Al enviar, tu aporte queda en estado de
+                revisión y no se publica automáticamente.
+              </p>
+            </fieldset>
+
+            <div class="form-submit">
+              <button class="btn btn--ink form-submit__button" type="submit" data-submit>
+                <span data-submit-label>Sembrar mi saber</span>
+                <span class="form-submit__spinner" data-submit-spinner aria-hidden="true"></span>
+                <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true" data-submit-arrow>
+                  <path d="M2.5 8h10M9 4.5 12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+
+              <p>
+                <span class="required" aria-hidden="true">*</span> Campos
+                obligatorios. Tus datos de contacto no se publican.
+              </p>
+            </div>
+
+            <div class="form-honey" aria-hidden="true">
+              <label for="sitio_web">No completar este campo</label>
+              <input
+                id="sitio_web"
+                name="sitio_web"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+          </form>
+
+          <div class="form-success" data-success tabindex="-1" hidden>
+            <Seal size="lg" />
+            <p class="kicker kicker--plain">Gracias por sembrar</p>
+            <h2 class="display display--md">Tu saber ya hace parte de este archivo.</h2>
+            <p class="form-success__copy">
+              Recibimos tu aporte. Quedó pendiente de revisión para cuidar el
+              contexto, el permiso y la autoría.
+            </p>
+
+            <div class="success-ticket">
+              <span>Tu código de referencia</span>
+              <strong data-ticket>SP-2026-000000</strong>
+            </div>
+
+            <div class="form-success__actions">
+              <button class="btn btn--ink" type="button" data-reset>
+                Compartir otro saber
+              </button>
+              <a class="btn btn--outline-dark" href="/">Volver al inicio</a>
+            </div>
+
+            <p class="form-success__note">
+              Guarda este código. Si necesitas ampliar o retirar tu aporte,
+              podremos identificar tu envío con él.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ==================== INTRO ==================== */
+
+  .form-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem) 0;
+    background: var(--paper);
+  }
+
+  .form-hero::before {
+    content: '';
+    position: absolute;
+    top: 1rem;
+    right: -14rem;
+    width: clamp(26rem, 48vw, 46rem);
+    aspect-ratio: 1;
+    border: 1px solid rgba(138, 94, 23, 0.12);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .form-hero__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .form-hero__bar > p {
+    color: var(--ink-soft);
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--forest-900);
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  .back-link svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  .back-link:hover svg {
+    transform: translateX(-0.25rem);
+  }
+
+  .form-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 7vw, 9rem);
+    align-items: center;
+    padding-block: clamp(3rem, 6vw, 6rem) clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .form-hero__copy {
+    max-width: 50rem;
+  }
+
+  .form-hero__title {
+    max-width: 10ch;
+    margin-top: 1.4rem;
+    color: var(--forest-900);
+    font-size: clamp(3.6rem, 7.8vw, 8rem);
+  }
+
+  .form-hero__title em {
+    color: var(--gold-deep);
+  }
+
+  .form-hero__copy .lede {
+    max-width: 48ch;
+    margin-top: 1.7rem;
+  }
+
+  .form-hero__notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .form-hero__notes li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    font-size: 0.65rem;
+    font-weight: 650;
+    letter-spacing: 0.03em;
+  }
+
+  .form-hero__notes li::before {
+    content: '✦';
+    color: var(--gold-deep);
+    font-size: 0.5rem;
+  }
+
+  .form-hero__visual {
+    position: relative;
+    max-width: 26rem;
+    justify-self: end;
+    width: 100%;
+  }
+
+  .form-hero__figure {
+    margin: 0;
+  }
+
+  .form-hero__figure img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 14rem 14rem 1.1rem 1.1rem;
+    filter: saturate(0.85);
+  }
+
+  .form-hero__figure figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    color: var(--ink-soft);
+    font-size: 0.61rem;
+    line-height: 1.5;
+  }
+
+  .form-hero__figure figcaption span {
+    opacity: 0.55;
+  }
+
+  .form-hero__aside {
+    position: absolute;
+    bottom: 2.8rem;
+    left: -4rem;
+    display: flex;
+    width: 15rem;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.1rem;
+    border-radius: 1rem;
+    background: var(--forest-900);
+    color: var(--cream);
+    box-shadow: 0 18px 40px rgba(11, 42, 33, 0.2);
+  }
+
+  .form-hero__aside :global(.seal) {
+    flex: none;
+    color: var(--gold);
+  }
+
+  .form-hero__aside p {
+    color: rgba(246, 240, 228, 0.66);
+    font-size: 0.68rem;
+    line-height: 1.55;
+  }
+
+  .form-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .form-steps a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.1rem 0.8rem;
+    border-right: 1px solid var(--line);
+    color: var(--forest-900);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s var(--ease-soft);
+  }
+
+  .form-steps a:last-child {
+    border-right: 0;
+  }
+
+  .form-steps a:hover {
+    background: rgba(216, 198, 165, 0.2);
+  }
+
+  .form-steps span {
+    color: var(--gold-deep);
+    font-size: 0.58rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+  }
+
+  /* ==================== FORMULARIO ==================== */
+
+  .form-section {
+    position: relative;
+    padding-block: clamp(3.5rem, 7vw, 7rem) clamp(5rem, 9vw, 9rem);
+    background: #e9decb;
+  }
+
+  .form-section__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: 1.1rem clamp(2rem, 6vw, 7rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .form-section__intro .kicker {
+    grid-column: 1 / -1;
+  }
+
+  .form-section__intro h2 {
+    color: var(--forest-900);
+  }
+
+  .form-section__intro > p {
+    max-width: 45ch;
+    padding-bottom: 0.3rem;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  .form-layout {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.55fr) minmax(0, 1.45fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+
+  .form-guide__inner {
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+  }
+
+  .form-guide h3 {
+    max-width: 12ch;
+    margin-top: 0.9rem;
+    color: var(--forest-900);
+  }
+
+  .guide-list {
+    display: grid;
+    margin-top: 1.6rem;
+  }
+
+  .guide-list li {
+    display: grid;
+    grid-template-columns: 1.9rem 1fr;
+    gap: 0.5rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .guide-list span {
+    padding-top: 0.15rem;
+    color: var(--gold-deep);
+    font-size: 0.58rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+  }
+
+  .guide-list p {
+    color: var(--ink-soft);
+    font-size: 0.76rem;
+    line-height: 1.6;
+  }
+
+  .guide-list strong {
+    color: var(--forest-900);
+    font-weight: 700;
+  }
+
+  .progress-card {
+    margin-top: 1.8rem;
+    padding: 1.2rem;
+    border-radius: var(--radius-sm);
+    background: var(--forest-900);
+    color: var(--cream);
+  }
+
+  .progress-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(246, 240, 228, 0.58);
+    font-size: 0.6rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .progress-card__head span:last-child {
+    color: var(--gold);
+  }
+
+  .progress-card__track {
+    width: 100%;
+    height: 2px;
+    margin-block: 0.9rem;
+    overflow: hidden;
+    background: rgba(246, 240, 228, 0.16);
+  }
+
+  .progress-card__track span {
+    display: block;
+    width: 0%;
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.4s var(--ease-out);
+  }
+
+  .progress-card p {
+    color: rgba(246, 240, 228, 0.45);
+    font-size: 0.68rem;
+    line-height: 1.5;
+  }
+
+  .guide-privacy {
+    display: flex;
+    gap: 0.65rem;
+    margin-top: 1.4rem;
+    color: var(--ink-soft);
+    font-size: 0.67rem;
+    line-height: 1.6;
+  }
+
+  .guide-privacy svg {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+    margin-top: 0.18rem;
+    color: var(--gold-deep);
+  }
+
+  .form-card {
+    min-width: 0;
+    padding: clamp(1.35rem, 3.5vw, 3rem);
+    border: 1px solid rgba(20, 37, 30, 0.09);
+    border-radius: 1.1rem;
+    background: var(--white);
+    box-shadow: 0 18px 50px rgba(20, 37, 30, 0.08);
+  }
+
+  .form-status {
+    margin-bottom: 1.5rem;
+    padding: 0.95rem 1.1rem;
+    border: 1px solid rgba(201, 96, 70, 0.5);
+    border-radius: 0.7rem;
+    background: #f8e9e3;
+    color: #762a1a;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+
+  .form-status:focus-visible {
+    outline-color: var(--clay);
+  }
+
+  .form-block {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    scroll-margin-top: calc(var(--header-height) + 2rem);
+  }
+
+  .form-block + .form-block {
+    margin-top: clamp(2.4rem, 4vw, 3.6rem);
+    padding-top: clamp(2.4rem, 4vw, 3.6rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .form-block__legend {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0;
+  }
+
+  .form-block__number {
+    display: grid;
+    width: 2.05rem;
+    height: 2.05rem;
+    flex: none;
+    place-items: center;
+    border: 1px solid var(--gold-deep);
+    border-radius: 50%;
+    color: var(--gold-deep);
+    font-size: 0.67rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+  }
+
+  .form-block__name {
+    color: var(--forest-900);
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 2.4vw, 2.1rem);
+    font-weight: 470;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+
+  .form-block__hint {
+    max-width: 55ch;
+    margin-top: 0.65rem;
+    margin-bottom: 1.6rem;
+    padding-left: 2.85rem;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  .form-block .field + .field,
+  .form-block .field-grid + .field,
+  .form-block .field + .field-grid,
+  .form-block .field-grid + .field-grid {
+    margin-top: 1.25rem;
+  }
+
+  .form-block__fields {
+    margin-top: 1.25rem;
+  }
+
+  .field__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: var(--ink-soft);
+    font-size: 0.68rem;
+    line-height: 1.5;
+  }
+
+  .category-field {
+    margin-top: 1.35rem;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.7rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .category-option {
+    position: relative;
+    display: flex;
+    min-height: 3.35rem;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 0.65rem;
+    background: rgba(255, 253, 247, 0.6);
+    color: var(--forest-900);
+    cursor: pointer;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.2;
+    transition:
+      border-color 0.2s var(--ease-soft),
+      background-color 0.2s var(--ease-soft),
+      color 0.2s var(--ease-soft);
+  }
+
+  .category-option::after {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    flex: none;
+    margin-left: auto;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    opacity: 0.35;
+  }
+
+  .category-option:hover {
+    border-color: var(--forest-700);
+  }
+
+  .category-option:has(input:checked) {
+    border-color: var(--forest-900);
+    background: var(--forest-900);
+    color: var(--cream);
+  }
+
+  .category-option:has(input:checked)::after {
+    border-color: var(--gold);
+    background: var(--gold);
+    box-shadow: inset 0 0 0 1.5px var(--forest-900);
+    opacity: 1;
+  }
+
+  .category-option:has(input:focus-visible) {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .category-option input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .category-option__icon {
+    width: 1.65rem;
+    height: 1.65rem;
+    flex: none;
+    opacity: 0.8;
+  }
+
+  .category-option:has(input:checked) .category-option__icon {
+    color: var(--gold);
+    opacity: 1;
+  }
+
+  /* -------------------- Dropzone -------------------- */
+
+  .dropzone {
+    position: relative;
+    display: grid;
+    min-height: 12rem;
+    place-items: center;
+    padding: 1.6rem;
+    border: 1px dashed #b6a789;
+    border-radius: 0.9rem;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(224, 171, 72, 0.09), transparent 60%),
+      rgba(248, 243, 231, 0.5);
+    text-align: center;
+    transition:
+      border-color 0.2s var(--ease-soft),
+      background-color 0.2s var(--ease-soft);
+  }
+
+  .dropzone:hover,
+  .dropzone.is-dragover {
+    border-color: var(--forest-700);
+    background-color: rgba(216, 198, 165, 0.22);
+  }
+
+  .dropzone:focus-within {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .dropzone__input {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  .dropzone__ui {
+    pointer-events: none;
+  }
+
+  .dropzone__ui > svg {
+    width: 2rem;
+    height: 2rem;
+    margin-inline: auto;
+    color: var(--gold-deep);
+  }
+
+  .dropzone__title {
+    margin-top: 0.8rem;
+    color: var(--forest-900);
+    font-size: 0.85rem;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+
+  .dropzone__title span {
+    display: block;
+    color: var(--gold-deep);
+    font-weight: 650;
+  }
+
+  .dropzone__hint {
+    max-width: 46ch;
+    margin: 0.7rem auto 0;
+    color: var(--ink-soft);
+    font-size: 0.66rem;
+    line-height: 1.55;
+  }
+
+  .dropzone__error {
+    min-height: 1.1em;
+    margin-top: 0.5rem;
+    color: #8e301d;
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
+
+  .file-list {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.6rem;
+  }
+
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.65rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 0.6rem;
+    background: var(--paper);
+  }
+
+  .file-item__type {
+    display: grid;
+    width: 2.2rem;
+    height: 2.2rem;
+    flex: none;
+    place-items: center;
+    border-radius: 0.4rem;
+    background: var(--forest-900);
+    color: var(--gold);
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .file-item__info {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .file-item__name {
+    overflow: hidden;
+    color: var(--forest-900);
+    font-size: 0.76rem;
+    font-weight: 650;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-item__size {
+    color: var(--ink-soft);
+    font-size: 0.64rem;
+    line-height: 1.3;
+  }
+
+  .file-item__remove {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    color: var(--ink-soft);
+    transition:
+      background-color 0.2s var(--ease-soft),
+      color 0.2s var(--ease-soft);
+  }
+
+  .file-item__remove:hover {
+    background: rgba(201, 96, 70, 0.12);
+    color: #8e301d;
+  }
+
+  .file-item__remove svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  /* -------------------- Consentimiento -------------------- */
+
+  .consent-box {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .consent-box .check {
+    padding: 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 0.7rem;
+    background: rgba(248, 243, 231, 0.5);
+    font-size: 0.79rem;
+  }
+
+  .consent-box .check:has(input:checked) {
+    border-color: var(--forest-700);
+    background: rgba(216, 198, 165, 0.24);
+  }
+
+  .consent-note {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+    font-size: 0.68rem;
+    line-height: 1.55;
+  }
+
+  .form-submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.2rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .form-submit > p {
+    max-width: 26ch;
+    color: var(--ink-soft);
+    font-size: 0.65rem;
+    line-height: 1.55;
+  }
+
+  .form-submit__button {
+    min-width: 14rem;
+  }
+
+  .form-submit__button:disabled {
+    cursor: wait;
+    opacity: 0.78;
+    transform: none;
+  }
+
+  .form-submit__spinner {
+    display: none;
+    width: 0.95rem;
+    height: 0.95rem;
+    border: 1.5px solid rgba(246, 240, 228, 0.35);
+    border-top-color: var(--cream);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+  }
+
+  .form-submit__button.is-submitting [data-submit-arrow] {
+    display: none;
+  }
+
+  .form-submit__button.is-submitting [data-submit-spinner] {
+    display: block;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .form-honey {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* -------------------- Éxito -------------------- */
+
+  .form-success {
+    display: flex;
+    min-height: 38rem;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: clamp(1rem, 3vw, 3rem);
+    text-align: center;
+  }
+
+  .form-success[hidden] {
+    display: none;
+  }
+
+  form[hidden] {
+    display: none;
+  }
+
+  .form-success > :global(.seal) {
+    margin-bottom: 1.8rem;
+    color: var(--gold-deep);
+  }
+
+  .form-success h2 {
+    max-width: 16ch;
+    margin-top: 0.9rem;
+    color: var(--forest-900);
+  }
+
+  .form-success__copy {
+    max-width: 48ch;
+    margin-top: 1.2rem;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .success-ticket {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    border: 1px dashed #b6a789;
+    border-radius: 0.7rem;
+    background: var(--paper);
+  }
+
+  .success-ticket span {
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+    font-weight: 750;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .success-ticket strong {
+    color: var(--forest-900);
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    line-height: 1.1;
+  }
+
+  .form-success__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+
+  .form-success__note {
+    max-width: 40ch;
+    margin-top: 1.4rem;
+    color: var(--ink-soft);
+    font-size: 0.68rem;
+    line-height: 1.6;
+  }
+
+  /* ==================== RESPONSIVE ==================== */
+
+  @media (max-width: 1100px) {
+    .form-hero__aside {
+      left: -2rem;
+    }
+
+    .form-layout {
+      grid-template-columns: minmax(14rem, 0.5fr) minmax(0, 1.5fr);
+      gap: 2.5rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .form-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .form-hero__copy {
+      max-width: 43rem;
+    }
+
+    .form-hero__visual {
+      max-width: 100%;
+      justify-self: stretch;
+    }
+
+    .form-hero__figure img {
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-md);
+    }
+
+    .form-hero__aside {
+      position: static;
+      width: min(100%, 22rem);
+      margin-top: 1.2rem;
+    }
+
+    .form-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .form-steps a {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .form-steps a:nth-child(2) {
+      border-right: 0;
+    }
+
+    .form-steps a:nth-child(3),
+    .form-steps a:nth-child(4) {
+      border-bottom: 0;
+    }
+
+    .form-section__intro {
+      grid-template-columns: 1fr;
+    }
+
+    .form-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .form-guide {
+      order: 2;
+    }
+
+    .form-card {
+      order: 1;
+    }
+
+    .form-guide__inner {
+      position: static;
+      max-width: 42rem;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .form-hero__bar {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-hero__title {
+      font-size: clamp(3.3rem, 14vw, 5.5rem);
+    }
+
+    .form-hero__notes {
+      gap: 0.35rem;
+    }
+
+    .form-hero__notes li {
+      font-size: 0.6rem;
+    }
+
+    .form-section {
+      padding-top: 3rem;
+    }
+
+    .form-card {
+      padding: 1.1rem;
+      border-radius: 0.8rem;
+    }
+
+    .form-block__hint {
+      padding-left: 0;
+    }
+
+    .category-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .category-option {
+      min-height: 3.1rem;
+      font-size: 0.7rem;
+    }
+
+    .form-submit {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .form-submit__button {
+      width: 100%;
+    }
+
+    .form-success {
+      min-height: 30rem;
+      padding: 1rem 0;
+    }
+
+    .form-success__actions {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .form-success__actions .btn {
+      width: 100%;
+    }
+
+    .consent-box .check {
+      font-size: 0.74rem;
+    }
+
+    .dropzone {
+      min-height: 10.5rem;
+      padding: 1.2rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .category-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress-card__track span {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-saber-form]');
+
+  if (form) {
+    const successPanel = document.querySelector<HTMLElement>('[data-success]');
+    const statusBox = form.querySelector<HTMLElement>('[data-form-status]');
+    const submitButton = form.querySelector<HTMLButtonElement>('[data-submit]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
+    const ticketLabel = document.querySelector<HTMLElement>('[data-ticket]');
+
+    const fileInput = form.querySelector<HTMLInputElement>('[data-file-input]');
+    const dropzone = form.querySelector<HTMLElement>('[data-dropzone]');
+    const fileList = form.querySelector<HTMLElement>('[data-file-list]');
+    const fileError = form.querySelector<HTMLElement>('[data-file-error]');
+
+    const description = form.querySelector<HTMLTextAreaElement>('#descripcion');
+    const descriptionCount = document.querySelector<HTMLElement>('[data-description-count]');
+
+    const progressBar = document.querySelector<HTMLElement>('[data-progress-bar]');
+    const progressLabel = document.querySelector<HTMLElement>('[data-progress-label]');
+    const progressTrack = document.querySelector<HTMLElement>('[data-progress-track]');
+    const progressText = document.querySelector<HTMLElement>('[data-progress-text]');
+
+    const allowedExtensions = new Set([
+      'jpg',
+      'jpeg',
+      'png',
+      'webp',
+      'gif',
+      'pdf',
+      'mp3',
+      'wav',
+      'ogg',
+      'm4a',
+      'mp4',
+      'mov',
+      'webm',
+    ]);
+
+    const maxFiles = 8;
+    const maxFileBytes = 10 * 1024 * 1024;
+    const maxTotalBytes = 40 * 1024 * 1024;
+    const selectedFiles: File[] = [];
+
+    const numberFormat = new Intl.NumberFormat('es-CO');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const formatFileSize = (bytes: number) => {
+      if (bytes < 1024 * 1024) {
+        return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+      }
+
+      return `${(bytes / (1024 * 1024)).toFixed(1).replace('.', ',')} MB`;
+    };
+
+    const fileTypeLabel = (filename: string) => {
+      const extension = filename.split('.').pop()?.toLowerCase() ?? '';
+      if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(extension)) return 'IMG';
+      if (['mp3', 'wav', 'ogg', 'm4a'].includes(extension)) return 'AUD';
+      if (['mp4', 'mov', 'webm'].includes(extension)) return 'VID';
+      if (extension === 'pdf') return 'PDF';
+      return 'DOC';
+    };
+
+    const syncFileInput = () => {
+      if (!fileInput || typeof DataTransfer === 'undefined') return;
+
+      try {
+        const transfer = new DataTransfer();
+        selectedFiles.forEach((file) => transfer.items.add(file));
+        fileInput.files = transfer.files;
+      } catch {
+        // En navegadores sin soporte para editar FileList se envía la selección nativa.
+      }
+    };
+
+    const renderFiles = () => {
+      if (!fileList) return;
+
+      fileList.innerHTML = '';
+
+      selectedFiles.forEach((file, index) => {
+        const item = document.createElement('li');
+        item.className = 'file-item';
+
+        const type = document.createElement('span');
+        type.className = 'file-item__type';
+        type.textContent = fileTypeLabel(file.name);
+
+        const info = document.createElement('span');
+        info.className = 'file-item__info';
+
+        const name = document.createElement('span');
+        name.className = 'file-item__name';
+        name.textContent = file.name;
+
+        const size = document.createElement('small');
+        size.className = 'file-item__size';
+        size.textContent = formatFileSize(file.size);
+
+        info.append(name, size);
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'file-item__remove';
+        remove.setAttribute('aria-label', `Quitar ${file.name}`);
+        remove.innerHTML =
+          '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+        remove.addEventListener('click', () => {
+          selectedFiles.splice(index, 1);
+          syncFileInput();
+          renderFiles();
+
+          if (fileError) fileError.textContent = '';
+        });
+
+        item.append(type, info, remove);
+        fileList.append(item);
+      });
+    };
+
+    const addFiles = (incoming: File[]) => {
+      if (fileError) fileError.textContent = '';
+
+      for (const file of incoming) {
+        const extension = file.name.split('.').pop()?.toLowerCase() ?? '';
+
+        if (!allowedExtensions.has(extension)) {
+          if (fileError) fileError.textContent = `«${file.name}» no tiene un formato permitido.`;
+          continue;
+        }
+
+        if (file.size > maxFileBytes) {
+          if (fileError) fileError.textContent = `«${file.name}» supera los 10 MB.`;
+          continue;
+        }
+
+        if (
+          selectedFiles.some(
+            (selected) =>
+              selected.name === file.name &&
+              selected.size === file.size &&
+              selected.lastModified === file.lastModified
+          )
+        ) {
+          continue;
+        }
+
+        if (selectedFiles.length >= maxFiles) {
+          if (fileError) fileError.textContent = `Puedes adjuntar hasta ${maxFiles} archivos.`;
+          break;
+        }
+
+        const total = selectedFiles.reduce((sum, selected) => sum + selected.size, 0) + file.size;
+
+        if (total > maxTotalBytes) {
+          if (fileError) fileError.textContent = 'Los archivos superan el máximo total de 40 MB.';
+          break;
+        }
+
+        selectedFiles.push(file);
+      }
+
+      syncFileInput();
+      renderFiles();
+    };
+
+    fileInput?.addEventListener('change', () => {
+      addFiles(Array.from(fileInput.files ?? []));
+    });
+
+    if (dropzone) {
+      ['dragenter', 'dragover'].forEach((eventName) => {
+        dropzone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          dropzone.classList.add('is-dragover');
+        });
+      });
+
+      ['dragleave', 'dragend'].forEach((eventName) => {
+        dropzone.addEventListener(eventName, () => {
+          dropzone.classList.remove('is-dragover');
+        });
+      });
+
+      dropzone.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropzone.classList.remove('is-dragover');
+        addFiles(Array.from(event.dataTransfer?.files ?? []));
+      });
+    }
+
+    const updateCount = () => {
+      if (!description || !descriptionCount) return;
+      descriptionCount.textContent = `${numberFormat.format(description.value.length)} / 3.000`;
+    };
+
+    description?.addEventListener('input', updateCount);
+    updateCount();
+
+    const updateProgress = () => {
+      const valueOf = (name: string) => {
+        const element = form.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+          `[name="${name}"]`
+        );
+        return element?.value.trim() ?? '';
+      };
+
+      const category = form.querySelector<HTMLInputElement>('input[name="categoria"]:checked');
+      const authorization = form.querySelector<HTMLInputElement>('input[name="autoriza"]');
+
+      const checks = [
+        valueOf('nombre').length > 0,
+        valueOf('comunidad').length > 0,
+        valueOf('departamento').length > 0,
+        valueOf('municipio').length > 0,
+        valueOf('titulo').length > 0,
+        Boolean(category),
+        valueOf('descripcion').length > 0,
+        Boolean(authorization?.checked),
+      ];
+
+      const filled = checks.filter(Boolean).length;
+      const percent = Math.round((filled / checks.length) * 100);
+
+      if (progressBar) progressBar.style.width = `${percent}%`;
+      if (progressLabel) progressLabel.textContent = `${percent}%`;
+      if (progressTrack) progressTrack.setAttribute('aria-valuenow', String(percent));
+
+      if (progressText) {
+        if (percent === 0) {
+          progressText.textContent = 'Empieza por contarnos quién eres.';
+        } else if (percent < 50) {
+          progressText.textContent = 'Vas sembrando la memoria.';
+        } else if (percent < 100) {
+          progressText.textContent = 'Ya casi está listo.';
+        } else {
+          progressText.textContent = 'Todo listo para sembrar.';
+        }
+      }
+    };
+
+    form.addEventListener('input', updateProgress);
+    form.addEventListener('change', updateProgress);
+
+    const categoryFromUrl = new URLSearchParams(window.location.search).get('categoria');
+
+    if (categoryFromUrl) {
+      const categoryInput = Array.from(
+        form.querySelectorAll<HTMLInputElement>('input[name="categoria"]')
+      ).find((input) => input.value === categoryFromUrl);
+
+      if (categoryInput) categoryInput.checked = true;
+    }
+
+    updateProgress();
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      if (statusBox) {
+        statusBox.hidden = true;
+        statusBox.textContent = '';
+      }
+
+      if (submitButton) submitButton.disabled = true;
+      submitButton?.classList.add('is-submitting');
+      if (submitLabel) submitLabel.textContent = 'Sembrando tu saber…';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+
+        const data = (await response.json().catch(() => ({}))) as {
+          ok?: boolean;
+          message?: string;
+          ticket?: string;
+          errors?: Record<string, string>;
+        };
+
+        if (!response.ok || !data.ok) {
+          const details = data.errors ? Object.values(data.errors).slice(0, 3).join(' ') : '';
+          throw new Error(
+            [data.message || 'No pudimos guardar tu saber.', details].filter(Boolean).join(' ')
+          );
+        }
+
+        if (successPanel && ticketLabel) {
+          ticketLabel.textContent = data.ticket ?? 'SP-SIN-CODIGO';
+          form.hidden = true;
+          successPanel.hidden = false;
+          successPanel.focus({ preventScroll: true });
+          successPanel.scrollIntoView({
+            behavior: reduceMotion ? 'auto' : 'smooth',
+            block: 'center',
+          });
+        }
+      } catch (error) {
+        if (statusBox) {
+          statusBox.textContent =
+            error instanceof Error
+              ? error.message
+              : 'No pudimos guardar tu saber. Intenta de nuevo.';
+          statusBox.hidden = false;
+          statusBox.focus();
+        }
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+        submitButton?.classList.remove('is-submitting');
+        if (submitLabel) submitLabel.textContent = 'Sembrar mi saber';
+      }
+    });
+
+    document.querySelector<HTMLButtonElement>('[data-reset]')?.addEventListener('click', () => {
+      if (!successPanel) return;
+
+      successPanel.hidden = true;
+      form.hidden = false;
+      form.reset();
+      selectedFiles.length = 0;
+
+      if (fileError) fileError.textContent = '';
+      if (statusBox) {
+        statusBox.hidden = true;
+        statusBox.textContent = '';
+      }
+
+      syncFileInput();
+      renderFiles();
+      updateCount();
+      updateProgress();
+
+      const firstField = form.querySelector<HTMLInputElement>('#nombre');
+      firstField?.focus({ preventScroll: true });
+      form.scrollIntoView({
+        behavior: reduceMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    });
+  }
+</script>

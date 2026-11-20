@@ -1,0 +1,776 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import nuquiBoat from '../assets/images/nuqui-lancha.jpg';
+import chocoCoast from '../assets/images/choco-costa.jpg';
+import tumacoFishing from '../assets/images/tumaco-pesca.jpg';
+import marimbaDetail from '../assets/images/marimba-detalle.jpg';
+import turronCoco from '../assets/images/turron-coco.jpg';
+import guapiPanorama from '../assets/images/guapi-panorama.jpg';
+
+const licenseUrls = {
+  by20: 'https://creativecommons.org/licenses/by/2.0/',
+  bySa20: 'https://creativecommons.org/licenses/by-sa/2.0/',
+  bySa40: 'https://creativecommons.org/licenses/by-sa/4.0/',
+} as const;
+
+const photos = [
+  {
+    file: nuquiBoat,
+    alt: 'Una lancha de madera descansa sobre la arena húmeda de una playa, frente al océano Pacífico.',
+    title: 'Lancha en la playa',
+    place: 'Nuquí, Chocó',
+    author: 'Leonardo Cadavid Perdomo',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: licenseUrls.bySa40,
+    source: 'Wikimedia Commons',
+    sourceUrl:
+      'https://commons.wikimedia.org/wiki/File:FORGOTTEN_BOAT_AT_BEACH_1_NUQUI_CHOCO_COLOMBIA.jpg',
+  },
+  {
+    file: chocoCoast,
+    alt: 'Costa selvática del Chocó vista desde el mar, con una playa angosta y palmas al pie de la montaña.',
+    title: 'Costa selvática del Chocó',
+    place: 'Litoral del Chocó',
+    author: 'Luis Pérez',
+    license: 'CC BY 2.0',
+    licenseUrl: licenseUrls.by20,
+    source: 'Flickr',
+  },
+  {
+    file: tumacoFishing,
+    alt: 'Dos pescadores navegan en una chalupa sobre aguas abiertas cerca de Tumaco, Nariño.',
+    title: 'A pescar en chalupa',
+    place: 'Tumaco, Nariño',
+    author: 'Sol Robayo S.',
+    license: 'CC BY 2.0',
+    licenseUrl: licenseUrls.by20,
+    source: 'Flickr',
+  },
+  {
+    file: marimbaDetail,
+    alt: 'Detalle de la madera y las cuerdas de una marimba de chonta.',
+    title: 'Detalle de una marimba',
+    place: 'Pacífico sur colombiano',
+    author: 'audio-collage',
+    license: 'CC BY-SA 2.0',
+    licenseUrl: licenseUrls.bySa20,
+    source: 'Flickr',
+  },
+  {
+    file: turronCoco,
+    alt: 'Turrón de coco envuelto en hojas secas sobre un fondo rojo.',
+    title: 'Turrón de coco',
+    place: 'Fogón del Pacífico',
+    author: 'N. Fernando Sotelo Castro',
+    license: 'CC BY 2.0',
+    licenseUrl: licenseUrls.by20,
+    source: 'Flickr',
+  },
+  {
+    file: guapiPanorama,
+    alt: 'Panorámica del puerto de Guapi, Cauca, con lanchas y casas de madera sobre el agua.',
+    title: 'Panorámica de Guapi',
+    place: 'Guapi, Cauca',
+    author: 'Angeles2023',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: licenseUrls.bySa40,
+    source: 'Wikimedia Commons',
+    sourceUrl:
+      'https://commons.wikimedia.org/wiki/File:Guapi,_Cauca,_un_destino_en_busca_de_un_puerto.jpg',
+  },
+];
+---
+
+<BaseLayout
+  title="Créditos y transparencia"
+  description="Créditos de las fotografías, licencias, tipografías y notas de transparencia del archivo Saberes del Pacífico."
+  headerVariant="solid"
+  bodyClass="credits-page"
+>
+  <!-- ==================== INTRO ==================== -->
+  <section class="credits-hero">
+    <div class="page-shell">
+      <div class="credits-hero__bar">
+        <a class="back-link" href="/">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M13.5 8h-11M6 3.5 1.5 8 6 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Volver al archivo
+        </a>
+        <p>Transparencia · Autoría y cuidados</p>
+      </div>
+
+      <div class="credits-hero__grid">
+        <div>
+          <p class="kicker">Créditos y contexto</p>
+          <h1 class="display display--xl credits-hero__title">
+            Las imágenes<br />
+            también <em>tienen autoría.</em>
+          </h1>
+        </div>
+
+        <div class="credits-hero__copy">
+          <p class="lede">
+            Este archivo se construye con material propio y con fotografías de
+            personas que decidieron compartir su mirada bajo licencias
+            abiertas. Aquí están sus nombres, sus obras y las condiciones con
+            las que podemos usarlas.
+          </p>
+          <p>
+            Reconocer la autoría no es un detalle técnico: es una forma de
+            cuidar la memoria y de mantener la misma ética que pedimos a
+            quienes comparten sus saberes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOTOGRAFÍAS ==================== -->
+  <section class="section section--paper credits-photos" aria-labelledby="fotos-title">
+    <div class="page-shell">
+      <div class="credits-section-head">
+        <div>
+          <p class="kicker">01 / Fotografías</p>
+          <h2 class="display display--lg" id="fotos-title">
+            Miradas prestadas,<br />
+            <em>créditos devueltos.</em>
+          </h2>
+        </div>
+        <p class="credits-section-head__note">
+          Todas las imágenes se usan bajo licencias Creative Commons. Fueron
+          recortadas, redimensionadas y recomprimidas para la web; no se alteró
+          su contenido.
+        </p>
+      </div>
+
+      <div class="photo-credits">
+        {photos.map((photo, index) => (
+          <figure class="photo-credit reveal" style={`--reveal-delay: ${Math.min(index * 60, 300)}ms`}>
+            <div class="photo-credit__media">
+              <Image
+                src={photo.file}
+                alt={photo.alt}
+                widths={[360, 600, 900]}
+                sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                loading="lazy"
+                quality={78}
+              />
+              <span class="photo-credit__number" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+            </div>
+
+            <figcaption class="photo-credit__body">
+              <p class="photo-credit__place">{photo.place}</p>
+              <h3 class="photo-credit__title">{photo.title}</h3>
+              <p class="photo-credit__author">
+                Foto de <strong>{photo.author}</strong>
+              </p>
+
+              <div class="photo-credit__meta">
+                <a
+                  class="license-tag"
+                  href={photo.licenseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer license"
+                >
+                  {photo.license}
+                </a>
+                {photo.sourceUrl ? (
+                  <a
+                    class="photo-credit__source"
+                    href={photo.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {photo.source}
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M6 3h7v7M13 3 3 13M11 8v5H3V5h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                ) : (
+                  <span class="photo-credit__source">{photo.source}</span>
+                )}
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <p class="credits-footnote">
+        Las licencias CC BY permiten usar, adaptar y compartir la obra citando
+        la autoría. Las licencias CC BY-SA exigen, además, que las obras
+        derivadas se compartan bajo la misma licencia. Puedes leer el texto
+        completo de cada licencia en los enlaces de esta página.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== NOTAS ==================== -->
+  <section class="section credits-notes" aria-labelledby="notas-title">
+    <div class="page-shell">
+      <div class="credits-section-head">
+        <div>
+          <p class="kicker kicker--light">02 / Notas de transparencia</p>
+          <h2 class="display display--lg" id="notas-title">
+            Lo que este sitio<br />
+            es <em>y lo que no es.</em>
+          </h2>
+        </div>
+        <p class="credits-section-head__note">
+          Este es un prototipo editorial. Preferimos decirlo con claridad antes
+          que presentar como memoria comunitaria algo que aún no lo es.
+        </p>
+      </div>
+
+      <div class="notes-grid">
+        <article class="note-card reveal">
+          <span class="note-card__index">01</span>
+          <h3 class="display display--sm">Textos editoriales</h3>
+          <p>
+            Los manifiestos, descripciones, pies de foto y la frase
+            «El río no se lleva la memoria» son textos editoriales creados
+            para este prototipo. No son testimonios de personas ni de
+            comunidades reales.
+          </p>
+          <p>
+            Antes de publicar el archivo, cada contenido deberá ser validado,
+            ampliado o reemplazado con la voz y el consentimiento de sus
+            protagonistas.
+          </p>
+        </article>
+
+        <article class="note-card reveal" style="--reveal-delay: 80ms">
+          <span class="note-card__index">02</span>
+          <h3 class="display display--sm">Aportes y datos</h3>
+          <p>
+            Los saberes enviados por el formulario se guardan en el servidor,
+            dentro de <code>data/saberes</code>, y quedan en estado
+            <strong>pendiente de revisión</strong>. No se publican
+            automáticamente.
+          </p>
+          <p>
+            El correo de contacto y los archivos adjuntos son privados. Este
+            prototipo no usa analítica ni cookies de seguimiento.
+          </p>
+        </article>
+
+        <article class="note-card reveal" style="--reveal-delay: 160ms">
+          <span class="note-card__index">03</span>
+          <h3 class="display display--sm">Tipografías</h3>
+          <p>
+            <strong>Fraunces</strong>, de Undercase Type, y
+            <strong>Manrope</strong>, de Mikhail Sharanda, se distribuyen bajo
+            la SIL Open Font License 1.1 y se sirven desde el propio sitio
+            mediante Fontsource.
+          </p>
+          <p>
+            No se cargan tipografías ni recursos desde servidores de terceros.
+          </p>
+        </article>
+
+        <article class="note-card note-card--accent reveal">
+          <span class="note-card__index">04</span>
+          <h3 class="display display--sm">Antes de publicar</h3>
+          <p>
+            Cualquier versión pública de este archivo debe contar con un
+            proceso de revisión comunitaria, acuerdos de uso claros y un canal
+            para retirar o corregir aportes.
+          </p>
+          <p>
+            La tecnología puede guardar la memoria; el permiso y el contexto
+            son los que la cuidan.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA ==================== -->
+  <section class="credits-cta">
+    <div class="page-shell credits-cta__inner">
+      <div>
+        <p class="kicker">El archivo sigue creciendo</p>
+        <h2 class="display display--md">
+          Si reconoces una imagen, <em>nombra su historia.</em>
+        </h2>
+      </div>
+      <div class="credits-cta__actions">
+        <a class="btn btn--gold" href="/compartir">
+          Comparte tu saber
+          <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 8h10M9 4.5 12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a class="btn btn--outline-light" href="/">Volver al inicio</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ==================== INTRO ==================== */
+
+  .credits-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(3rem, 6vw, 6rem);
+    background: var(--paper);
+  }
+
+  .credits-hero::before {
+    content: '';
+    position: absolute;
+    top: -16rem;
+    right: -10rem;
+    width: clamp(28rem, 52vw, 52rem);
+    aspect-ratio: 1;
+    border: 1px solid rgba(138, 94, 23, 0.12);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .credits-hero__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .credits-hero__bar > p {
+    color: var(--ink-soft);
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--forest-900);
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  .back-link svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  .back-link:hover svg {
+    transform: translateX(-0.25rem);
+  }
+
+  .credits-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: clamp(2rem, 7vw, 9rem);
+    align-items: end;
+    padding-top: clamp(3rem, 6vw, 6rem);
+  }
+
+  .credits-hero__title {
+    max-width: 12ch;
+    margin-top: 1.3rem;
+    color: var(--forest-900);
+    font-size: clamp(3.2rem, 7.4vw, 7.4rem);
+  }
+
+  .credits-hero__title em {
+    color: var(--gold-deep);
+  }
+
+  .credits-hero__copy {
+    padding-bottom: 0.5rem;
+  }
+
+  .credits-hero__copy > p + p {
+    max-width: 46ch;
+    margin-top: 1.3rem;
+    color: var(--ink-soft);
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+
+  /* ==================== SECCIONES ==================== */
+
+  .credits-section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1.5rem, 5vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .credits-section-head h2 {
+    margin-top: 1.1rem;
+    color: var(--forest-900);
+  }
+
+  .credits-section-head__note {
+    max-width: 42ch;
+    padding-bottom: 0.4rem;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  /* ==================== FOTOGRAFÍAS ==================== */
+
+  .photo-credits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.6rem);
+  }
+
+  .photo-credit {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+  }
+
+  .photo-credit__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--forest-800);
+  }
+
+  .photo-credit__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease-out);
+  }
+
+  .photo-credit:hover .photo-credit__media img {
+    transform: scale(1.035);
+  }
+
+  .photo-credit__number {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    display: grid;
+    width: 1.9rem;
+    height: 1.9rem;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(6, 26, 20, 0.72);
+    color: var(--gold);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    backdrop-filter: blur(4px);
+  }
+
+  .photo-credit__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.05rem 1.1rem 1.1rem;
+  }
+
+  .photo-credit__place {
+    color: var(--gold-deep);
+    font-size: 0.57rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .photo-credit__title {
+    margin-top: 0.35rem;
+    color: var(--forest-900);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 480;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+
+  .photo-credit__author {
+    margin-top: 0.55rem;
+    color: var(--ink-soft);
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
+
+  .photo-credit__author strong {
+    color: var(--forest-900);
+    font-weight: 700;
+  }
+
+  .photo-credit__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem;
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .license-tag {
+    display: inline-flex;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(20, 37, 30, 0.22);
+    border-radius: 999px;
+    color: var(--forest-900);
+    font-size: 0.6rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      border-color 0.2s var(--ease-soft),
+      background-color 0.2s var(--ease-soft);
+  }
+
+  .license-tag:hover {
+    border-color: var(--gold-deep);
+    background: rgba(224, 171, 72, 0.14);
+  }
+
+  .photo-credit__source {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--ink-soft);
+    font-size: 0.65rem;
+    font-weight: 650;
+    line-height: 1.3;
+    text-decoration: none;
+  }
+
+  a.photo-credit__source:hover {
+    color: var(--gold-deep);
+  }
+
+  .photo-credit__source svg {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+
+  .credits-footnote {
+    max-width: 78ch;
+    margin-top: clamp(1.8rem, 3vw, 2.6rem);
+    padding-top: 1.3rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+    line-height: 1.65;
+  }
+
+  /* ==================== NOTAS ==================== */
+
+  .credits-notes {
+    background: var(--forest-900);
+    color: var(--cream);
+  }
+
+  .credits-notes .credits-section-head h2 {
+    color: var(--cream);
+  }
+
+  .credits-notes .credits-section-head h2 em {
+    color: var(--gold);
+  }
+
+  .credits-notes .credits-section-head__note {
+    color: rgba(246, 240, 228, 0.66);
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.5vw, 1.2rem);
+  }
+
+  .note-card {
+    display: flex;
+    min-height: 19rem;
+    flex-direction: column;
+    padding: clamp(1.4rem, 2.6vw, 2.2rem);
+    border: 1px solid var(--line-dark);
+    border-radius: var(--radius-sm);
+    background: rgba(246, 240, 228, 0.035);
+  }
+
+  .note-card--accent {
+    border-color: rgba(224, 171, 72, 0.35);
+    background: rgba(224, 171, 72, 0.09);
+  }
+
+  .note-card__index {
+    color: var(--gold);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  .note-card h3 {
+    margin-top: 1.5rem;
+    color: var(--cream);
+  }
+
+  .note-card p {
+    max-width: 54ch;
+    margin-top: 1rem;
+    color: rgba(246, 240, 228, 0.67);
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+
+  .note-card p + p {
+    margin-top: 0.8rem;
+  }
+
+  .note-card strong {
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .note-card code {
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.25rem;
+    background: rgba(246, 240, 228, 0.1);
+    color: var(--gold);
+    font-family: ui-monospace, 'Cascadia Code', monospace;
+    font-size: 0.88em;
+  }
+
+  /* ==================== CTA ==================== */
+
+  .credits-cta {
+    padding-block: clamp(3.5rem, 6vw, 6rem);
+    background: var(--gold);
+    color: var(--forest-950);
+  }
+
+  .credits-cta__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .credits-cta .kicker {
+    color: var(--forest-800);
+  }
+
+  .credits-cta h2 {
+    max-width: 24ch;
+    margin-top: 0.9rem;
+  }
+
+  .credits-cta h2 em {
+    color: var(--maroon);
+  }
+
+  .credits-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.6rem;
+  }
+
+  .credits-cta .btn--outline-light {
+    border-color: rgba(6, 26, 20, 0.3);
+    color: var(--forest-950);
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .credits-cta .btn--outline-light:hover {
+    border-color: var(--forest-950);
+    background: rgba(6, 26, 20, 0.08);
+  }
+
+  /* ==================== RESPONSIVE ==================== */
+
+  @media (max-width: 1100px) {
+    .credits-hero__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+      gap: 3rem;
+    }
+
+    .photo-credits {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .credits-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .credits-hero__copy {
+      max-width: 46rem;
+    }
+
+    .credits-section-head {
+      grid-template-columns: 1fr;
+      gap: 1.4rem;
+    }
+
+    .credits-cta__inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .credits-cta__actions {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .credits-hero__bar {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .credits-hero__title {
+      font-size: clamp(3rem, 13.5vw, 5rem);
+    }
+
+    .photo-credits {
+      grid-template-columns: 1fr;
+    }
+
+    .notes-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .note-card {
+      min-height: 0;
+    }
+
+    .credits-cta__actions {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .credits-cta__actions .btn {
+      width: 100%;
+    }
+  }
+</style>
