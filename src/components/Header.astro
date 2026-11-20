@@ -24,7 +24,7 @@ const pathname = Astro.url.pathname;
 
     <nav class="primary-nav" aria-label="Navegación principal">
       <a class="nav-link" href="/#territorio">Territorio</a>
-      <a class="nav-link" href="/#saberes">Saberes</a>
+      <a class="nav-link" href="/saberes" aria-current={pathname.startsWith('/saberes') ? 'page' : undefined}>Saberes</a>
       <a class="nav-link" href="/#participar">Participa</a>
       <a class="nav-link" href="/#principios">Cuidados</a>
       <a

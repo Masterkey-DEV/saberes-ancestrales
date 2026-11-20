@@ -1,0 +1,299 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategoryIcon from '../../components/CategoryIcon.astro';
+import { getSaberesPublicados, CATEGORIA_LABELS } from '../../lib/notion';
+
+export const prerender = false;
+
+const saberes = await getSaberesPublicados();
+
+const categorias = [
+  { value: 'oralidad',   label: 'Oralidad' },
+  { value: 'musica',     label: 'Música' },
+  { value: 'medicina',   label: 'Medicina' },
+  { value: 'tejido',     label: 'Tejido' },
+  { value: 'cocina',     label: 'Cocina' },
+  { value: 'territorio', label: 'Territorio' },
+  { value: 'otro',       label: 'Otro saber' },
+];
+---
+
+<BaseLayout
+  title="Archivo de saberes"
+  description="Explora los saberes ancestrales del Pacífico colombiano compartidos por sus comunidades: oralidad, música, medicina, tejido, cocina y territorio."
+>
+  <!-- ── Encabezado ── -->
+  <section class="saberes-hero">
+    <div class="page-shell">
+      <p class="kicker">Archivo vivo · Pacífico colombiano</p>
+      <h1 class="display display--xl">
+        Los saberes<br />
+        <em>de la memoria.</em>
+      </h1>
+      <p class="saberes-hero__lede">
+        Conocimientos, oficios y tradiciones compartidos voluntariamente
+        por comunidades de Chocó, Valle del Cauca, Cauca y Nariño.
+      </p>
+      <a href="/compartir" class="btn btn--gold">
+        Comparte tu saber
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Galería ── -->
+  <section class="saberes-galeria" aria-labelledby="galeria-title">
+    <div class="page-shell">
+
+      <!-- Filtros -->
+      <div class="saberes-filtros" role="group" aria-label="Filtrar por categoría">
+        <button class="filtro is-active" data-filtro="todos">Todos</button>
+        {categorias.map((c) => (
+          <button class="filtro" data-filtro={c.value}>{c.label}</button>
+        ))}
+      </div>
+
+      {saberes.length === 0 ? (
+        <div class="saberes-empty">
+          <p>Todavía no hay saberes publicados.</p>
+          <a href="/compartir" class="btn btn--gold">
+            Sé el primero en compartir
+          </a>
+        </div>
+      ) : (
+        <ul class="saberes-grid" id="galeria-title" role="list">
+          {saberes.map((saber) => (
+            <li
+              class="saber-card reveal"
+              data-categoria={saber.categoria}
+            >
+              <a href={`/saberes/${saber.id}`} class="saber-card__link">
+                <div class="saber-card__top">
+                  <CategoryIcon
+                    name={saber.categoria as any}
+                    class="saber-card__icon"
+                  />
+                  <span class="saber-card__cat">
+                    {CATEGORIA_LABELS[saber.categoria] ?? saber.categoria}
+                  </span>
+                </div>
+
+                <h2 class="saber-card__titulo">{saber.titulo}</h2>
+
+                <p class="saber-card__desc">
+                  {saber.descripcion.slice(0, 140)}
+                  {saber.descripcion.length > 140 ? '…' : ''}
+                </p>
+
+                <footer class="saber-card__footer">
+                  <span class="saber-card__autor">{saber.nombre}</span>
+                  <span class="saber-card__lugar">
+                    {saber.municipio}, {saber.departamento}
+                  </span>
+                </footer>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const filtros = document.querySelectorAll<HTMLButtonElement>('.filtro');
+  const cards   = document.querySelectorAll<HTMLElement>('.saber-card');
+
+  filtros.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const valor = btn.dataset.filtro ?? 'todos';
+
+      filtros.forEach((f) => f.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      cards.forEach((card) => {
+        const coincide = valor === 'todos' || card.dataset.categoria === valor;
+        card.style.display = coincide ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<style>
+  /* ── Hero ── */
+  .saberes-hero {
+    background: var(--color-forest, #0b2a21);
+    color: #fff;
+    padding-block: 4rem 3.5rem;
+  }
+
+  .saberes-hero .kicker {
+    color: rgba(255 255 255 / 0.55);
+    margin-bottom: 1rem;
+  }
+
+  .saberes-hero .display {
+    color: #fff;
+    margin-bottom: 1.25rem;
+  }
+
+  .saberes-hero__lede {
+    max-width: 44ch;
+    color: rgba(255 255 255 / 0.75);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+
+  /* ── Galería ── */
+  .saberes-galeria {
+    background: var(--color-paper, #fdf9f2);
+    padding-block: 3rem 5rem;
+  }
+
+  /* ── Filtros ── */
+  .saberes-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .filtro {
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1.5px solid rgba(11 42 33 / 0.2);
+    background: transparent;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--color-forest, #0b2a21);
+    transition: background 0.15s, border-color 0.15s;
+    font-family: inherit;
+  }
+
+  .filtro:hover {
+    border-color: var(--color-forest, #0b2a21);
+  }
+
+  .filtro.is-active {
+    background: var(--color-forest, #0b2a21);
+    color: #fff;
+    border-color: var(--color-forest, #0b2a21);
+  }
+
+  /* ── Grid de tarjetas ── */
+  .saberes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── Tarjeta ── */
+  .saber-card {
+    background: #fff;
+    border: 1px solid rgba(0 0 0 / 0.07);
+    border-radius: 0.875rem;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .saber-card:hover {
+    box-shadow: 0 6px 24px rgba(0 0 0 / 0.09);
+    transform: translateY(-2px);
+  }
+
+  .saber-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .saber-card__top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .saber-card__icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--color-gold, #c8a84b);
+  }
+
+  .saber-card__cat {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #888;
+    font-weight: 600;
+  }
+
+  .saber-card__titulo {
+    font-size: 1.1rem;
+    line-height: 1.35;
+    color: var(--color-forest, #0b2a21);
+    margin-bottom: 0.75rem;
+    font-family: var(--font-serif, serif);
+  }
+
+  .saber-card__desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #555;
+    flex: 1;
+    margin-bottom: 1.25rem;
+  }
+
+  .saber-card__footer {
+    border-top: 1px solid rgba(0 0 0 / 0.06);
+    padding-top: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .saber-card__autor {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-forest, #0b2a21);
+  }
+
+  .saber-card__lugar {
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  /* ── Estado vacío ── */
+  .saberes-empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    color: #666;
+  }
+
+  /* ── btn util ── */
+  .btn--gold {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.7rem 1.5rem;
+    background: var(--color-gold, #c8a84b);
+    color: #fff;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: opacity 0.15s;
+  }
+
+  .btn--gold:hover {
+    opacity: 0.88;
+  }
+</style>

@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategoryIcon from '../../components/CategoryIcon.astro';
+import { getSaberById, CATEGORIA_LABELS } from '../../lib/notion';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+if (!id) return Astro.redirect('/saberes');
+
+const saber = await getSaberById(id);
+
+if (!saber) {
+  return Astro.redirect('/saberes');
+}
+
+const categoriaLabel =
+  CATEGORIA_LABELS[saber.categoria] ?? saber.categoria;
+
+const fechaFormateada = saber.creadoEn
+  ? new Date(saber.creadoEn).toLocaleDateString('es-CO', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+---
+
+<BaseLayout
+  title={saber.titulo}
+  description={saber.descripcion.slice(0, 160)}
+>
+  <article class="saber-page">
+    <!-- ── Encabezado ── -->
+    <header class="saber-header">
+      <div class="page-shell">
+        <nav class="saber-breadcrumb" aria-label="Navegación">
+          <a href="/">Inicio</a>
+          <span aria-hidden="true">›</span>
+          <a href="/saberes">Saberes</a>
+          <span aria-hidden="true">›</span>
+          <span>{categoriaLabel}</span>
+        </nav>
+
+        <div class="saber-header__inner">
+          <div class="saber-header__meta">
+            <CategoryIcon
+              name={saber.categoria as any}
+              class="saber-header__icon"
+            />
+            <span class="saber-header__categoria">{categoriaLabel}</span>
+          </div>
+
+          <h1 class="display display--xl saber-header__titulo">
+            {saber.titulo}
+          </h1>
+
+          <dl class="saber-header__data">
+            <div>
+              <dt>Compartido por</dt>
+              <dd>{saber.nombre}</dd>
+            </div>
+            <div>
+              <dt>Comunidad</dt>
+              <dd>{saber.comunidad}</dd>
+            </div>
+            <div>
+              <dt>Territorio</dt>
+              <dd>{saber.municipio}, {saber.departamento}</dd>
+            </div>
+            {fechaFormateada && (
+              <div>
+                <dt>Registrado</dt>
+                <dd>
+                  <time datetime={saber.creadoEn}>{fechaFormateada}</time>
+                </dd>
+              </div>
+            )}
+          </dl>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Cuerpo ── -->
+    <div class="saber-body">
+      <div class="page-shell">
+        <div class="saber-body__grid">
+
+          <!-- Contenido principal -->
+          <div class="saber-body__main">
+            <section class="saber-section" aria-labelledby="descripcion-title">
+              <h2 class="saber-section__title" id="descripcion-title">
+                El saber
+              </h2>
+              <div class="saber-prose">
+                {saber.descripcion.split('\n').filter(Boolean).map((p) => (
+                  <p>{p}</p>
+                ))}
+              </div>
+            </section>
+
+            {saber.transmision && (
+              <section class="saber-section" aria-labelledby="transmision-title">
+                <h2 class="saber-section__title" id="transmision-title">
+                  Cómo se transmite
+                </h2>
+                <div class="saber-prose">
+                  {saber.transmision.split('\n').filter(Boolean).map((p) => (
+                    <p>{p}</p>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {saber.enlace && (
+              <section class="saber-section" aria-labelledby="enlace-title">
+                <h2 class="saber-section__title" id="enlace-title">
+                  Recurso externo
+                </h2>
+                <a
+                  href={saber.enlace}
+                  class="saber-enlace"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {saber.enlace}
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M6 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3M9 2h5m0 0v5m0-5L7.5 8.5"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
+              </section>
+            )}
+          </div>
+
+          <!-- Ficha lateral -->
+          <aside class="saber-ficha" aria-label="Información del saber">
+            {saber.origen && (
+              <div class="saber-ficha__item">
+                <p class="saber-ficha__label">Origen</p>
+                <p class="saber-ficha__value">{saber.origen}</p>
+              </div>
+            )}
+            {saber.idioma && (
+              <div class="saber-ficha__item">
+                <p class="saber-ficha__label">Idioma / lengua</p>
+                <p class="saber-ficha__value">{saber.idioma}</p>
+              </div>
+            )}
+            <div class="saber-ficha__item">
+              <p class="saber-ficha__label">Categoría</p>
+              <p class="saber-ficha__value">{categoriaLabel}</p>
+            </div>
+            <div class="saber-ficha__item">
+              <p class="saber-ficha__label">Referencia</p>
+              <p class="saber-ficha__value saber-ficha__ticket">{saber.ticket}</p>
+            </div>
+
+            <div class="saber-ficha__aviso">
+              <p>
+                Este saber fue compartido voluntariamente y publicado con
+                autorización de quien lo comparte.
+              </p>
+            </div>
+
+            <a href="/saberes" class="btn btn--outline saber-ficha__back">
+              ← Ver todos los saberes
+            </a>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  /* ── Layout general ── */
+  .saber-page {
+    min-height: 100dvh;
+  }
+
+  /* ── Header ── */
+  .saber-header {
+    background: var(--color-forest, #0b2a21);
+    color: #fff;
+    padding-block: 3rem 4rem;
+  }
+
+  .saber-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(255 255 255 / 0.6);
+    margin-bottom: 2.5rem;
+  }
+
+  .saber-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .saber-breadcrumb a:hover {
+    color: #fff;
+  }
+
+  .saber-header__inner {
+    max-width: 46rem;
+  }
+
+  .saber-header__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    color: rgba(255 255 255 / 0.75);
+  }
+
+  .saber-header__icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-gold, #c8a84b);
+  }
+
+  .saber-header__categoria {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .saber-header__titulo {
+    color: #fff;
+    margin-bottom: 2rem;
+  }
+
+  .saber-header__data {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: 1rem 2rem;
+    font-size: 0.875rem;
+  }
+
+  .saber-header__data dt {
+    color: rgba(255 255 255 / 0.5);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.2rem;
+  }
+
+  .saber-header__data dd {
+    color: rgba(255 255 255 / 0.9);
+    margin: 0;
+  }
+
+  /* ── Body ── */
+  .saber-body {
+    padding-block: 3.5rem 5rem;
+    background: var(--color-paper, #fdf9f2);
+  }
+
+  .saber-body__grid {
+    display: grid;
+    grid-template-columns: 1fr 18rem;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .saber-body__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .saber-ficha {
+      order: -1;
+    }
+  }
+
+  /* ── Secciones ── */
+  .saber-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .saber-section__title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-forest, #0b2a21);
+    opacity: 0.5;
+    margin-bottom: 1rem;
+    font-family: var(--font-sans, sans-serif);
+    font-weight: 600;
+  }
+
+  .saber-prose p {
+    line-height: 1.75;
+    color: var(--color-ink, #1a1a1a);
+    margin-bottom: 1rem;
+    max-width: 66ch;
+  }
+
+  .saber-enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-forest, #0b2a21);
+    word-break: break-all;
+    text-decoration: underline;
+    font-size: 0.9rem;
+  }
+
+  .saber-enlace svg {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Ficha lateral ── */
+  .saber-ficha {
+    background: #fff;
+    border: 1px solid rgba(0 0 0 / 0.08);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .saber-ficha__item {
+    border-bottom: 1px solid rgba(0 0 0 / 0.06);
+    padding-bottom: 1rem;
+  }
+
+  .saber-ficha__item:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .saber-ficha__label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-bottom: 0.25rem;
+  }
+
+  .saber-ficha__value {
+    font-size: 0.9rem;
+    color: var(--color-ink, #1a1a1a);
+  }
+
+  .saber-ficha__ticket {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .saber-ficha__aviso {
+    background: #fdf9f2;
+    border-radius: 0.5rem;
+    padding: 0.875rem 1rem;
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .saber-ficha__back {
+    display: block;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+
+  /* ── btn util ── */
+  .btn--outline {
+    border: 1.5px solid currentColor;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    color: var(--color-forest, #0b2a21);
+    transition: background 0.15s;
+  }
+
+  .btn--outline:hover {
+    background: rgba(11 42 33 / 0.06);
+  }
+</style>
